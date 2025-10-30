@@ -6,8 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { compensateCurriculum } from "@/lib/compensate-curriculum";
 import { curriculum } from "@/lib/curriculum";
-import { Fragment, useMemo } from "react";
+import { Fragment, useMemo, useState } from "react";
+import { Checkbox } from "./ui/checkbox";
 
 type CurriculumTableProps = {
   selectedGroup: number;
@@ -19,29 +21,22 @@ export function CurriculumTable({
   excludedClasses,
 }: CurriculumTableProps) {
   const selectedGroup = `A${selectedGroupId}`;
+  const [excludedDays, setExcludedDays] = useState<string[]>([]);
 
-  const scheduleData = useMemo(
-    () =>
-      Object.keys(curriculum).map((day) => ({
-        day,
-        classes: curriculum[day].filter(
-          (cls) =>
-            cls.groups.includes(selectedGroup) &&
-            !excludedClasses.includes(cls.subject),
-        ),
-      })),
-    [selectedGroup, excludedClasses],
-  );
+  const scheduleData = useMemo(() => {
+    const preProcessedCurriculum = Object.keys(curriculum).map((day) => ({
+      day,
+      classes: curriculum[day].filter(
+        (cls) => !excludedClasses.includes(cls.subject),
+      ),
+    }));
 
-  const filteredSchedule = scheduleData.map((daySchedule) => ({
-    ...daySchedule,
-    classes: daySchedule.classes.filter((classSession) => {
-      const isGroupMatch =
-        selectedGroup === null || classSession.groups.includes(selectedGroup);
-      const isNotExcluded = !excludedClasses.includes(classSession.subject);
-      return isGroupMatch && isNotExcluded;
-    }),
-  }));
+    return compensateCurriculum(
+      preProcessedCurriculum,
+      selectedGroup,
+      excludedDays,
+    );
+  }, [selectedGroup, excludedClasses, excludedDays]);
 
   function formatGroups(groupNames: string[]): string {
     const groups = groupNames.map((name) => name.replace("A", ""));
@@ -82,9 +77,9 @@ export function CurriculumTable({
       case "P":
         return "Predavanje";
       case "V":
-        return "Vežba";
+        return "Vežbe";
       case "L":
-        return "Laboratorija";
+        return "Laboratorijske Vežbe";
       default:
         return type;
     }
@@ -104,7 +99,7 @@ export function CurriculumTable({
         </TableHeader>
 
         <TableBody>
-          {filteredSchedule.map((daySchedule) => (
+          {scheduleData?.map((daySchedule) => (
             <Fragment key={daySchedule.day}>
               {daySchedule.classes.length > 0 && (
                 <>
@@ -117,6 +112,22 @@ export function CurriculumTable({
                       className="bg-muted/50 py-3 font-semibold text-foreground"
                     >
                       {daySchedule.day}
+
+                      <Checkbox
+                        checked={excludedDays.includes(daySchedule.day)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setExcludedDays((prev) => [
+                              ...prev,
+                              daySchedule.day,
+                            ]);
+                          } else {
+                            setExcludedDays((prev) =>
+                              prev.filter((day) => day !== daySchedule.day),
+                            );
+                          }
+                        }}
+                      />
                     </TableCell>
                   </TableRow>
 
