@@ -1,0 +1,1 @@
+export const Day = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak"]
