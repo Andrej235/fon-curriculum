@@ -1,157 +1,147 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { BasicOptions } from "@/lib/basic-options";
 import { curriculum } from "@/lib/curriculum";
-import { days } from "@/lib/day";
-import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Home() {
-  const [selectedGroup, setSelectedGroup] = useState<string>("A1");
-  const [hoveringOverColumn, setHoveringOverColumn] = useState<number | null>(
+  const router = useRouter();
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+  const [excludedClasses, setExcludedClasses] = useState<string[]>([]);
+
+  const [savedOptions, setSavedOptions] = useLocalStorage<BasicOptions | null>(
+    "basicOptions",
+    null,
+  );
+  const [, , removeSavedAdvancedOptions] = useLocalStorage(
+    "advancedOptions",
     null,
   );
 
-  const curriculumTimes = useMemo(
+  useEffect(() => {
+    if (!savedOptions) return;
+
+    setSelectedGroup(savedOptions.group);
+    setExcludedClasses(savedOptions.excludedClasses);
+  }, [savedOptions]);
+
+  const handleClassToggle = (className: string) => {
+    setExcludedClasses((prev) =>
+      prev.includes(className)
+        ? prev.filter((c) => c !== className)
+        : [...prev, className],
+    );
+  };
+
+  const handleContinue = () => {
+    if (selectedGroup === null) return;
+
+    const options: BasicOptions = {
+      group: selectedGroup,
+      excludedClasses,
+    };
+
+    setSavedOptions(options);
+    removeSavedAdvancedOptions();
+    router.push("/raspored");
+  };
+
+  const allClasses = useMemo(
     () =>
       Array.from(
         new Set(
-          Object.keys(curriculum).flatMap((x) =>
-            curriculum[x].map((x) => x.time),
-          ),
+          Object.keys(curriculum)
+            .flatMap((day) => curriculum[day])
+            .filter((x) => x.groups.includes(`A${selectedGroup}`))
+            .map((x) => x.subject),
         ),
-      ),
-    [],
+      ).sort(),
+    [selectedGroup],
   );
 
   return (
-    <div className="flex flex-col">
-      <header className="py-8">
-        <div className="flex justify-center">
-          <Select
-            onValueChange={(value) => setSelectedGroup(value)}
-            value={selectedGroup}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Izaberi grupu" />
-            </SelectTrigger>
-
-            <SelectContent>
-              {Array.from({ length: 18 }).map((_, i) => {
-                const group = `A${i + 1}`;
-
-                return (
-                  <SelectItem key={group} value={group}>
-                    {group}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
+    <main className="min-h-screen bg-background p-6 md:p-12">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-semibold text-foreground">
+            Napravi Svoj Raspored
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            Izaberi svoju grupu i predmete koje ne želiš da pohađaš
+          </p>
         </div>
-      </header>
 
-      <Table className="overflow-auto select-none">
-        <TableHeader>
-          <TableRow>
-            <TableHead
-              className={cn(
-                "text-center transition-colors",
-                hoveringOverColumn === 0 && "bg-muted/40",
-              )}
-              onMouseOver={() => setHoveringOverColumn(0)}
-              onMouseLeave={() => setHoveringOverColumn(null)}
-            >
-              Vreme
-            </TableHead>
-            {days.map((day, index) => (
-              <TableHead
-                className={cn(
-                  "text-center transition-colors",
-                  hoveringOverColumn === index + 1 && "bg-muted/40",
-                )}
-                key={day}
-                onMouseEnter={() => setHoveringOverColumn(index + 1)}
-                onMouseLeave={() => setHoveringOverColumn(null)}
-              >
-                {day}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {curriculumTimes.map((time) => {
-            const classes = Object.keys(curriculum).map((day) =>
-              curriculum[day].filter(
-                (x) => x.time == time && x.groups.includes(selectedGroup),
-              ),
-            );
-
-            const max = Math.max(...classes.map((x) => x.length));
-
-            return Array.from({ length: max }).map((_, i) => (
-              <TableRow key={`${i}-${time}`}>
-                <TableCell
-                  className={cn(
-                    "text-center transition-colors",
-                    hoveringOverColumn === 0 && "bg-muted/40",
-                  )}
-                  onMouseEnter={() => setHoveringOverColumn(0)}
-                  onMouseLeave={() => setHoveringOverColumn(null)}
+        <div className="space-y-8">
+          <div className="rounded-lg border border-border bg-card p-6">
+            <h2 className="mb-4 text-lg font-semibold text-foreground">
+              Izaberi Svoju Grupu
+            </h2>
+            <div className="grid grid-cols-6 gap-2 sm:grid-cols-9">
+              {Array.from({ length: 18 }, (_, i) => i + 1).map((group) => (
+                <button
+                  key={group}
+                  onClick={() => setSelectedGroup(group)}
+                  className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                    selectedGroup === group
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border bg-background text-foreground hover:bg-muted"
+                  }`}
                 >
-                  {time}
-                </TableCell>
+                  {group}
+                </button>
+              ))}
+            </div>
+          </div>
 
-                {classes.map((x, j) => (
-                  <TableCell
-                    key={
-                      !x[i]
-                        ? `${i}-${j}-empty`
-                        : `${i}-${x[i].groups}-${x[i].location}-${x[i].subject}`
-                    }
-                    className={cn(
-                      "h-32 max-w-max text-center transition-colors",
-                      hoveringOverColumn === j + 1 && "bg-muted/40",
-                    )}
-                    onMouseEnter={() => setHoveringOverColumn(j + 1)}
-                    onMouseLeave={() => setHoveringOverColumn(null)}
+          <div className="rounded-lg border border-border bg-card p-6">
+            <h2 className="text-lg font-semibold text-foreground">
+              Isključi Predmete
+            </h2>
+            <p className="mb-4 text-sm text-muted-foreground">
+              Izaberi predmete koje ne želiš da pohađaš
+            </p>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {allClasses.map((className) => (
+                <div key={className} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={className}
+                    checked={excludedClasses.includes(className)}
+                    onCheckedChange={() => handleClassToggle(className)}
+                  />
+                  <Label
+                    htmlFor={className}
+                    className="cursor-pointer text-sm font-normal text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    {x[i] && (
-                      <div className="px-6">
-                        <h3 className="text-center text-sm">{x[i].subject}</h3>
-                        <div className="flex justify-between">
-                          <p className="mt-2 text-end text-xs text-muted-foreground">
-                            {x[i].type}
-                          </p>
+                    {className}
+                  </Label>
+                </div>
+              ))}
 
-                          <p className="mt-2 text-end text-xs text-muted-foreground">
-                            {x[i].location}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ));
-          })}
-        </TableBody>
-      </Table>
-    </div>
+              {allClasses.length === 0 && (
+                <p className="min-w-full text-sm text-muted-foreground">
+                  Prvo izaberi grupu da vidiš dostupne predmete.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <Button
+              onClick={handleContinue}
+              disabled={selectedGroup === null}
+              size="lg"
+            >
+              Napravi Raspored
+            </Button>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
