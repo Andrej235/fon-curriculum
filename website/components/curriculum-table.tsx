@@ -1,0 +1,159 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { curriculum } from "@/lib/curriculum";
+import { Fragment, useMemo } from "react";
+
+type CurriculumTableProps = {
+  selectedGroup: number;
+  excludedClasses: string[];
+};
+
+export function CurriculumTable({
+  selectedGroup: selectedGroupId,
+  excludedClasses,
+}: CurriculumTableProps) {
+  const selectedGroup = `A${selectedGroupId}`;
+
+  const scheduleData = useMemo(
+    () =>
+      Object.keys(curriculum).map((day) => ({
+        day,
+        classes: curriculum[day].filter(
+          (cls) =>
+            cls.groups.includes(selectedGroup) &&
+            !excludedClasses.includes(cls.subject),
+        ),
+      })),
+    [selectedGroup, excludedClasses],
+  );
+
+  const filteredSchedule = scheduleData.map((daySchedule) => ({
+    ...daySchedule,
+    classes: daySchedule.classes.filter((classSession) => {
+      const isGroupMatch =
+        selectedGroup === null || classSession.groups.includes(selectedGroup);
+      const isNotExcluded = !excludedClasses.includes(classSession.subject);
+      return isGroupMatch && isNotExcluded;
+    }),
+  }));
+
+  function formatGroups(groupNames: string[]): string {
+    const groups = groupNames.map((name) => name.replace("A", ""));
+    if (groups.length === 1) return `Grupa ${groups[0]}`;
+    return `Grupe ${formatNumberArray(groups.map(Number))}`;
+
+    function formatNumberArray(nums: number[]): string {
+      if (nums.length <= 4) {
+        return nums.join(", ");
+      }
+
+      const ranges: string[] = [];
+      let start = nums[0];
+      let prev = nums[0];
+
+      for (let i = 1; i <= nums.length; i++) {
+        const curr = nums[i];
+
+        // If break in sequence, push a range
+        if (curr !== prev + 1) {
+          if (start === prev) {
+            ranges.push(`${start}`);
+          } else {
+            ranges.push(`${start}-${prev}`);
+          }
+          start = curr;
+        }
+
+        prev = curr;
+      }
+
+      return ranges.join(", ");
+    }
+  }
+
+  function formatClassType(type: string): string {
+    switch (type) {
+      case "P":
+        return "Predavanje";
+      case "V":
+        return "Vežba";
+      case "L":
+        return "Laboratorija";
+      default:
+        return type;
+    }
+  }
+
+  return (
+    <div className="rounded-lg border border-border bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-32 font-semibold">Time</TableHead>
+            <TableHead className="w-40 font-semibold">Type</TableHead>
+            <TableHead className="font-semibold">Class</TableHead>
+            <TableHead className="w-48 font-semibold">Groups</TableHead>
+            <TableHead className="w-48 font-semibold">Location</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {filteredSchedule.map((daySchedule) => (
+            <Fragment key={daySchedule.day}>
+              {daySchedule.classes.length > 0 && (
+                <>
+                  <TableRow
+                    key={daySchedule.day}
+                    className="hover:bg-transparent"
+                  >
+                    <TableCell
+                      colSpan={5}
+                      className="bg-muted/50 py-3 font-semibold text-foreground"
+                    >
+                      {daySchedule.day}
+                    </TableCell>
+                  </TableRow>
+
+                  {daySchedule.classes.map((classSession, index) => (
+                    <TableRow
+                      key={`${daySchedule.day}-${index}`}
+                      className="hover:bg-muted/30"
+                    >
+                      <TableCell className="font-mono text-sm text-muted-foreground">
+                        {classSession.time}
+                      </TableCell>
+
+                      <TableCell>
+                        <span className="text-muted-foreground">
+                          {formatClassType(classSession.type)}
+                        </span>
+                      </TableCell>
+
+                      <TableCell className="font-medium text-foreground">
+                        {classSession.subject}
+                      </TableCell>
+
+                      <TableCell className="text-sm text-muted-foreground">
+                        {formatGroups(classSession.groups)}
+                      </TableCell>
+
+                      <TableCell className="text-sm text-muted-foreground">
+                        {classSession.location}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              )}
+            </Fragment>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}

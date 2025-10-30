@@ -3,7 +3,7 @@ import { Curriculum } from "./curriculum-type";
 export const curriculum: Curriculum = {
   Ponedeljak: [
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "P",
       groups: ["A7", "A8", "A9"],
       time: "08:15-10:00",
@@ -31,7 +31,7 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 2",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "P",
       groups: ["A4", "A5", "A6", "A10"],
       time: "10:15-12:00",
@@ -87,14 +87,14 @@ export const curriculum: Curriculum = {
       location: "13",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A7"],
       time: "12:15-14:00",
       location: "61",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A7"],
       time: "12:15-14:00",
@@ -159,7 +159,21 @@ export const curriculum: Curriculum = {
     {
       subject: "Osnovi organizacije",
       type: "P",
-      groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", ""],
+      groups: [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "A11",
+        "A12",
+        "A13",
+      ],
       time: "16:15-18:00",
       location: "Amfiteatar 1",
     },
@@ -173,7 +187,7 @@ export const curriculum: Curriculum = {
       location: "13",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A8"],
       time: "08:15-10:00",
@@ -201,21 +215,21 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 2",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A8"],
       time: "08:15-10:00",
       location: "60",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A4"],
       time: "10:15-12:00",
       location: "50",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "P",
       groups: ["A1", "A2", "A3"],
       time: "10:15-12:00",
@@ -236,7 +250,7 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 2",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A4"],
       time: "10:15-12:00",
@@ -299,7 +313,7 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 2",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A3"],
       time: "12:15-14:00",
@@ -313,7 +327,7 @@ export const curriculum: Curriculum = {
       location: "08",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A3"],
       time: "12:15-14:00",
@@ -355,7 +369,7 @@ export const curriculum: Curriculum = {
       location: "07",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A5"],
       time: "14:15-16:00",
@@ -369,7 +383,7 @@ export const curriculum: Curriculum = {
       location: "09",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A5"],
       time: "14:15-16:00",
@@ -560,14 +574,14 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 3",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A10"],
       time: "14:15-16:00",
       location: "61",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A10"],
       time: "14:15-16:00",
@@ -674,7 +688,7 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 5",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A9"],
       time: "12:15-14:00",
@@ -723,7 +737,7 @@ export const curriculum: Curriculum = {
       location: "13",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A9"],
       time: "12:15-14:00",
@@ -837,14 +851,14 @@ export const curriculum: Curriculum = {
       location: "14",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A1"],
       time: "08:15-10:00",
       location: "60",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A1"],
       time: "08:15-10:00",
@@ -879,7 +893,7 @@ export const curriculum: Curriculum = {
       location: "16",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A2"],
       time: "12:15-14:00",
@@ -893,7 +907,7 @@ export const curriculum: Curriculum = {
       location: "07",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A2"],
       time: "12:15-14:00",
@@ -942,7 +956,7 @@ export const curriculum: Curriculum = {
       location: "Amfiteatar 4",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A6"],
       time: "14:15-16:00",
@@ -956,7 +970,7 @@ export const curriculum: Curriculum = {
       location: "15",
     },
     {
-      subject: "Elektronsko poslovanje (NA)",
+      subject: "Elektronsko poslovanje",
       type: "V",
       groups: ["A6"],
       time: "14:15-16:00",
