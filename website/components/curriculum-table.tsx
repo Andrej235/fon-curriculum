@@ -13,6 +13,8 @@ import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 import { days } from "@/lib/day";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 type CurriculumTableProps = {
   selectedGroup: number;
@@ -69,11 +71,19 @@ export function CurriculumTable({
   );
 
   const scheduleData = useMemo(() => {
-    return compensateCurriculum(
+    const newSchedule = compensateCurriculum(
       preProcessedCurriculum,
       selectedGroup,
       excludedDays,
     );
+
+    if (!newSchedule) {
+      toast.error("Nije moguće napraviti raspored");
+    } else {
+      toast.success("Raspored napravljen");
+    }
+
+    return newSchedule;
   }, [selectedGroup, preProcessedCurriculum, excludedDays]);
 
   function formatGroups(groupNames: string[]): string {
@@ -138,8 +148,13 @@ export function CurriculumTable({
 
         <TableBody>
           {days.map((day) => {
+            const processedDaySchedule = scheduleData?.filter(
+              (schedule) => schedule.day === day,
+            )[0];
+            const excluded = !processedDaySchedule;
+
             const daySchedule =
-              scheduleData?.filter((schedule) => schedule.day === day)[0] ??
+              processedDaySchedule ??
               preProcessedGroupCurriculum.filter(
                 (schedule) => schedule.day === day,
               )[0];
@@ -168,7 +183,12 @@ export function CurriculumTable({
                             />
                           </Button>
 
-                          <p>{daySchedule.day}</p>
+                          <p
+                            className={cn(excluded && "text-muted-foreground")}
+                          >
+                            {daySchedule.day}
+                            {excluded && <span> (isključen)</span>}
+                          </p>
 
                           <Checkbox
                             checked={excludedDays.includes(daySchedule.day)}
@@ -198,7 +218,10 @@ export function CurriculumTable({
                       daySchedule.classes.map((classSession, index) => (
                         <TableRow
                           key={`${daySchedule.day}-${index}`}
-                          className="hover:bg-muted/30"
+                          className={cn(
+                            "hover:bg-muted/30",
+                            excluded && "opacity-50",
+                          )}
                         >
                           <TableCell className="font-mono text-sm text-muted-foreground">
                             {classSession.time}
