@@ -86,7 +86,7 @@ export default function Home() {
                 <button
                   key={group}
                   onClick={() => setSelectedGroup(group)}
-                  className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-md border sm:px-4 py-2 text-sm font-medium transition-colors ${
                     selectedGroup === group
                       ? "border-foreground bg-foreground text-background"
                       : "border-border bg-background text-foreground hover:bg-muted"

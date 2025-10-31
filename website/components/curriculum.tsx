@@ -2,6 +2,7 @@
 import { CurriculumTable } from "@/components/curriculum-table";
 import { Button } from "@/components/ui/button";
 import { BasicOptions } from "@/lib/basic-options";
+import { Edit2 } from "lucide-react";
 import Link from "next/link";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -17,13 +18,16 @@ export default function Curriculum() {
         <div className="mb-8 flex items-center justify-between">
           <div>
             {group && (
-              <h1 className="text-3xl font-semibold text-foreground">
+              <h1 className="text-xl font-semibold text-foreground xl:text-3xl">
                 Raspored - Grupa A{group}
               </h1>
             )}
           </div>
-          <Button variant="outline" asChild>
-            <Link href="/">Promeni Opcije</Link>
+          <Button variant="outline" asChild className="max-sm:size-9">
+            <Link href="/">
+              <Edit2 className="sm:hidden" />
+              <span className="hidden sm:inline">Promeni Opcije</span>
+            </Link>
           </Button>
         </div>
         {group && (
