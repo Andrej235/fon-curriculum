@@ -10,6 +10,8 @@ import { compensateCurriculum } from "@/lib/compensate-curriculum";
 import { curriculum } from "@/lib/curriculum";
 import { Fragment, useMemo, useState } from "react";
 import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
+import { ChevronDown } from "lucide-react";
 
 type CurriculumTableProps = {
   selectedGroup: number;
@@ -22,6 +24,15 @@ export function CurriculumTable({
 }: CurriculumTableProps) {
   const selectedGroup = `A${selectedGroupId}`;
   const [excludedDays, setExcludedDays] = useState<string[]>([]);
+  const [collapsedDays, setCollapsedDays] = useState<string[]>([]);
+
+  function toggleCollapsed(day: string) {
+    if (collapsedDays.includes(day)) {
+      setCollapsedDays((prev) => prev.filter((d) => d !== day));
+    } else {
+      setCollapsedDays((prev) => [...prev, day]);
+    }
+  }
 
   const scheduleData = useMemo(() => {
     const preProcessedCurriculum = Object.keys(curriculum).map((day) => ({
@@ -105,60 +116,75 @@ export function CurriculumTable({
                 <>
                   <TableRow
                     key={daySchedule.day}
-                    className="hover:bg-transparent"
+                    className="w-full min-w-full bg-muted/50 py-3"
+                    onClick={() => toggleCollapsed(daySchedule.day)}
                   >
                     <TableCell
                       colSpan={5}
-                      className="bg-muted/50 py-3 font-semibold text-foreground"
+                      className="font-semibold text-foreground"
                     >
-                      {daySchedule.day}
+                      <div className="flex items-center">
+                        <Button size="icon" variant="ghost">
+                          <ChevronDown
+                            className={
+                              collapsedDays.includes(daySchedule.day)
+                                ? "rotate-180"
+                                : ""
+                            }
+                          />
+                        </Button>
 
-                      <Checkbox
-                        checked={excludedDays.includes(daySchedule.day)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setExcludedDays((prev) => [
-                              ...prev,
-                              daySchedule.day,
-                            ]);
-                          } else {
-                            setExcludedDays((prev) =>
-                              prev.filter((day) => day !== daySchedule.day),
-                            );
-                          }
-                        }}
-                      />
+                        <p>{daySchedule.day}</p>
+
+                        <Checkbox
+                          checked={excludedDays.includes(daySchedule.day)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setExcludedDays((prev) => [
+                                ...prev,
+                                daySchedule.day,
+                              ]);
+                            } else {
+                              setExcludedDays((prev) =>
+                                prev.filter((day) => day !== daySchedule.day),
+                              );
+                            }
+                          }}
+                          className="mr-4 ml-auto"
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
 
-                  {daySchedule.classes.map((classSession, index) => (
-                    <TableRow
-                      key={`${daySchedule.day}-${index}`}
-                      className="hover:bg-muted/30"
-                    >
-                      <TableCell className="font-mono text-sm text-muted-foreground">
-                        {classSession.time}
-                      </TableCell>
+                  {!collapsedDays.includes(daySchedule.day) &&
+                    daySchedule.classes.map((classSession, index) => (
+                      <TableRow
+                        key={`${daySchedule.day}-${index}`}
+                        className="hover:bg-muted/30"
+                      >
+                        <TableCell className="font-mono text-sm text-muted-foreground">
+                          {classSession.time}
+                        </TableCell>
 
-                      <TableCell>
-                        <span className="text-muted-foreground">
-                          {formatClassType(classSession.type)}
-                        </span>
-                      </TableCell>
+                        <TableCell>
+                          <span className="text-muted-foreground">
+                            {formatClassType(classSession.type)}
+                          </span>
+                        </TableCell>
 
-                      <TableCell className="font-medium text-foreground">
-                        {classSession.subject}
-                      </TableCell>
+                        <TableCell className="font-medium text-foreground">
+                          {classSession.subject}
+                        </TableCell>
 
-                      <TableCell className="text-sm text-muted-foreground">
-                        {formatGroups(classSession.groups)}
-                      </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {formatGroups(classSession.groups)}
+                        </TableCell>
 
-                      <TableCell className="text-sm text-muted-foreground">
-                        {classSession.location}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        <TableCell className="text-sm text-muted-foreground">
+                          {classSession.location}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </>
               )}
             </Fragment>
