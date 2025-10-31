@@ -13,9 +13,9 @@ export default function Curriculum() {
   const excludedClasses = options?.excludedClasses ?? [];
 
   return (
-    <main className="min-h-screen bg-background p-6 md:p-12">
+    <main className="min-h-screen bg-background px-2 py-6 sm:px-6 md:p-12">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-center gap-2 sm:mb-8 sm:justify-between">
           <div>
             {group && (
               <h1 className="text-xl font-semibold text-foreground xl:text-3xl">
@@ -30,6 +30,7 @@ export default function Curriculum() {
             </Link>
           </Button>
         </div>
+
         {group && (
           <CurriculumTable
             selectedGroup={group}

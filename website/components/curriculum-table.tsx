@@ -8,13 +8,12 @@ import {
 } from "@/components/ui/table";
 import { compensateCurriculum } from "@/lib/compensate-curriculum";
 import { curriculum } from "@/lib/curriculum";
-import { Fragment, useMemo, useState } from "react";
-import { Checkbox } from "./ui/checkbox";
-import { Button } from "./ui/button";
-import { ChevronDown } from "lucide-react";
 import { days } from "@/lib/day";
 import { cn } from "@/lib/utils";
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { Fragment, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "./ui/button";
 
 type CurriculumTableProps = {
   selectedGroup: number;
@@ -80,7 +79,7 @@ export function CurriculumTable({
     if (!newSchedule) {
       toast.error("Nije moguće napraviti raspored");
     } else {
-      toast.success("Raspored napravljen");
+      toast.success("Raspored je uspešno napravljen");
     }
 
     return newSchedule;
@@ -138,11 +137,13 @@ export function CurriculumTable({
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="w-32 font-semibold">Time</TableHead>
-            <TableHead className="w-40 font-semibold">Type</TableHead>
-            <TableHead className="font-semibold">Class</TableHead>
-            <TableHead className="w-48 font-semibold">Groups</TableHead>
-            <TableHead className="w-48 font-semibold">Location</TableHead>
+            <TableHead className="w-32 font-semibold">Vreme</TableHead>
+            <TableHead className="w-40 font-semibold max-sm:hidden">
+              Tip
+            </TableHead>
+            <TableHead className="font-semibold">Predmet</TableHead>
+            <TableHead className="w-48 font-semibold">Grupe</TableHead>
+            <TableHead className="w-48 font-semibold">Lokacija</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -190,10 +191,13 @@ export function CurriculumTable({
                             {excluded && <span> (isključen)</span>}
                           </p>
 
-                          <Checkbox
-                            checked={excludedDays.includes(daySchedule.day)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              if (!excludedDays.includes(daySchedule.day)) {
                                 setExcludedDays((prev) => [
                                   ...prev,
                                   daySchedule.day,
@@ -205,11 +209,14 @@ export function CurriculumTable({
                                 );
                               }
                             }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
                             className="mr-4 ml-auto"
-                          />
+                          >
+                            {excludedDays.includes(daySchedule.day) ? (
+                              <Eye />
+                            ) : (
+                              <EyeOff />
+                            )}
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -227,14 +234,29 @@ export function CurriculumTable({
                             {classSession.time}
                           </TableCell>
 
-                          <TableCell>
+                          <TableCell className="max-sm:hidden">
                             <span className="text-muted-foreground">
                               {formatClassType(classSession.type)}
                             </span>
                           </TableCell>
 
                           <TableCell className="font-medium text-foreground">
-                            {classSession.subject}
+                            <span className="max-sm:hidden">
+                              {classSession.subject}
+                            </span>
+                            <span className="sm:hidden">
+                              {classSession.subject.length > 30
+                                ? `${classSession.subject
+                                    .split(" ")
+                                    .map((x) =>
+                                      x.length > 1 ? x[0].toUpperCase() : x,
+                                    )
+                                    .join("")}`
+                                : classSession.subject}
+                            </span>{" "}
+                            <span className="sm:hidden">
+                              ({classSession.type})
+                            </span>
                           </TableCell>
 
                           <TableCell className="text-sm text-muted-foreground">
