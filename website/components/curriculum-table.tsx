@@ -12,6 +12,7 @@ import { Fragment, useMemo, useState } from "react";
 import { Checkbox } from "./ui/checkbox";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
+import { days } from "@/lib/day";
 
 type CurriculumTableProps = {
   selectedGroup: number;
@@ -26,7 +27,16 @@ export function CurriculumTable({
   const [excludedDays, setExcludedDays] = useState<string[]>([]);
   const [collapsedDays, setCollapsedDays] = useState<string[]>([]);
 
-  function toggleCollapsed(day: string) {
+  function toggleCollapsed(day: string, collapsed?: boolean) {
+    if (collapsed !== undefined) {
+      if (collapsed) {
+        setCollapsedDays((prev) => [...prev, day]);
+      } else {
+        setCollapsedDays((prev) => prev.filter((d) => d !== day));
+      }
+      return;
+    }
+
     if (collapsedDays.includes(day)) {
       setCollapsedDays((prev) => prev.filter((d) => d !== day));
     } else {
@@ -34,20 +44,37 @@ export function CurriculumTable({
     }
   }
 
-  const scheduleData = useMemo(() => {
-    const preProcessedCurriculum = Object.keys(curriculum).map((day) => ({
-      day,
-      classes: curriculum[day].filter(
-        (cls) => !excludedClasses.includes(cls.subject),
-      ),
-    }));
+  const preProcessedCurriculum = useMemo(
+    () =>
+      Object.keys(curriculum).map((day) => ({
+        day,
+        classes: curriculum[day].filter(
+          (cls) => !excludedClasses.includes(cls.subject),
+        ),
+      })),
+    [excludedClasses],
+  );
 
+  const preProcessedGroupCurriculum = useMemo(
+    () =>
+      Object.keys(curriculum).map((day) => ({
+        day,
+        classes: curriculum[day].filter(
+          (cls) =>
+            !excludedClasses.includes(cls.subject) &&
+            cls.groups.includes(selectedGroup),
+        ),
+      })),
+    [excludedClasses, selectedGroup],
+  );
+
+  const scheduleData = useMemo(() => {
     return compensateCurriculum(
       preProcessedCurriculum,
       selectedGroup,
       excludedDays,
     );
-  }, [selectedGroup, excludedClasses, excludedDays]);
+  }, [selectedGroup, preProcessedCurriculum, excludedDays]);
 
   function formatGroups(groupNames: string[]): string {
     const groups = groupNames.map((name) => name.replace("A", ""));
@@ -110,85 +137,97 @@ export function CurriculumTable({
         </TableHeader>
 
         <TableBody>
-          {scheduleData?.map((daySchedule) => (
-            <Fragment key={daySchedule.day}>
-              {daySchedule.classes.length > 0 && (
-                <>
-                  <TableRow
-                    key={daySchedule.day}
-                    className="w-full min-w-full bg-muted/50 py-3"
-                    onClick={() => toggleCollapsed(daySchedule.day)}
-                  >
-                    <TableCell
-                      colSpan={5}
-                      className="font-semibold text-foreground"
+          {days.map((day) => {
+            const daySchedule =
+              scheduleData?.filter((schedule) => schedule.day === day)[0] ??
+              preProcessedGroupCurriculum.filter(
+                (schedule) => schedule.day === day,
+              )[0];
+
+            return (
+              <Fragment key={daySchedule.day}>
+                {daySchedule.classes.length > 0 && (
+                  <>
+                    <TableRow
+                      key={daySchedule.day}
+                      className="w-full min-w-full bg-muted/50 py-3"
+                      onClick={() => toggleCollapsed(daySchedule.day)}
                     >
-                      <div className="flex items-center">
-                        <Button size="icon" variant="ghost">
-                          <ChevronDown
-                            className={
-                              collapsedDays.includes(daySchedule.day)
-                                ? "rotate-180"
-                                : ""
-                            }
-                          />
-                        </Button>
-
-                        <p>{daySchedule.day}</p>
-
-                        <Checkbox
-                          checked={excludedDays.includes(daySchedule.day)}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setExcludedDays((prev) => [
-                                ...prev,
-                                daySchedule.day,
-                              ]);
-                            } else {
-                              setExcludedDays((prev) =>
-                                prev.filter((day) => day !== daySchedule.day),
-                              );
-                            }
-                          }}
-                          className="mr-4 ml-auto"
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-
-                  {!collapsedDays.includes(daySchedule.day) &&
-                    daySchedule.classes.map((classSession, index) => (
-                      <TableRow
-                        key={`${daySchedule.day}-${index}`}
-                        className="hover:bg-muted/30"
+                      <TableCell
+                        colSpan={5}
+                        className="font-semibold text-foreground"
                       >
-                        <TableCell className="font-mono text-sm text-muted-foreground">
-                          {classSession.time}
-                        </TableCell>
+                        <div className="flex items-center">
+                          <Button size="icon" variant="ghost">
+                            <ChevronDown
+                              className={
+                                collapsedDays.includes(daySchedule.day)
+                                  ? "rotate-180"
+                                  : ""
+                              }
+                            />
+                          </Button>
 
-                        <TableCell>
-                          <span className="text-muted-foreground">
-                            {formatClassType(classSession.type)}
-                          </span>
-                        </TableCell>
+                          <p>{daySchedule.day}</p>
 
-                        <TableCell className="font-medium text-foreground">
-                          {classSession.subject}
-                        </TableCell>
+                          <Checkbox
+                            checked={excludedDays.includes(daySchedule.day)}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setExcludedDays((prev) => [
+                                  ...prev,
+                                  daySchedule.day,
+                                ]);
+                                toggleCollapsed(daySchedule.day, true);
+                              } else {
+                                setExcludedDays((prev) =>
+                                  prev.filter((day) => day !== daySchedule.day),
+                                );
+                              }
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            className="mr-4 ml-auto"
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
 
-                        <TableCell className="text-sm text-muted-foreground">
-                          {formatGroups(classSession.groups)}
-                        </TableCell>
+                    {!collapsedDays.includes(daySchedule.day) &&
+                      daySchedule.classes.map((classSession, index) => (
+                        <TableRow
+                          key={`${daySchedule.day}-${index}`}
+                          className="hover:bg-muted/30"
+                        >
+                          <TableCell className="font-mono text-sm text-muted-foreground">
+                            {classSession.time}
+                          </TableCell>
 
-                        <TableCell className="text-sm text-muted-foreground">
-                          {classSession.location}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </>
-              )}
-            </Fragment>
-          ))}
+                          <TableCell>
+                            <span className="text-muted-foreground">
+                              {formatClassType(classSession.type)}
+                            </span>
+                          </TableCell>
+
+                          <TableCell className="font-medium text-foreground">
+                            {classSession.subject}
+                          </TableCell>
+
+                          <TableCell className="text-sm text-muted-foreground">
+                            {formatGroups(classSession.groups)}
+                          </TableCell>
+
+                          <TableCell className="text-sm text-muted-foreground">
+                            {classSession.location}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </>
+                )}
+              </Fragment>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
