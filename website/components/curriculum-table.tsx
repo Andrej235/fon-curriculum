@@ -6,13 +6,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AdvancedOptions } from "@/lib/advanced-options";
 import { compensateCurriculum } from "@/lib/compensate-curriculum";
 import { curriculum } from "@/lib/curriculum";
 import { days } from "@/lib/day";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Eye, EyeOff } from "lucide-react";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo } from "react";
 import { toast } from "sonner";
+import { useLocalStorage } from "usehooks-ts";
 import { Button } from "./ui/button";
 
 type CurriculumTableProps = {
@@ -25,25 +27,54 @@ export function CurriculumTable({
   excludedClasses,
 }: CurriculumTableProps) {
   const selectedGroup = `A${selectedGroupId}`;
-  const [excludedDays, setExcludedDays] = useState<string[]>([]);
-  const [collapsedDays, setCollapsedDays] = useState<string[]>([]);
 
-  function toggleCollapsed(day: string, collapsed?: boolean) {
-    if (collapsed !== undefined) {
-      if (collapsed) {
-        setCollapsedDays((prev) => [...prev, day]);
-      } else {
-        setCollapsedDays((prev) => prev.filter((d) => d !== day));
-      }
+  const [advancedOptions, setAdvancedOptions] =
+    useLocalStorage<AdvancedOptions>("advancedOptions", null!);
+
+  function toggleCollapsed(day: string) {
+    setAdvancedOptions((prev) => ({
+      ...prev,
+      collapsedDays: !prev.collapsedDays.includes(day)
+        ? [...prev.collapsedDays, day]
+        : prev.collapsedDays.filter((d) => d !== day),
+    }));
+  }
+
+  function toggleExcludedDay(day: string) {
+    setAdvancedOptions((prev) => {
+      const alreadyExcluded = prev.excludedDays.includes(day);
+
+      return {
+        ...prev,
+        collapsedDays: !alreadyExcluded
+          ? [...prev.collapsedDays, day]
+          : prev.collapsedDays.filter((d) => d !== day),
+        excludedDays: !alreadyExcluded
+          ? [...prev.excludedDays, day]
+          : prev.excludedDays.filter((d) => d !== day),
+      };
+    });
+  }
+
+  useEffect(() => {
+    if (advancedOptions === null) {
+      setAdvancedOptions({
+        excludedDays: [],
+        collapsedDays: [],
+      });
       return;
     }
 
-    if (collapsedDays.includes(day)) {
-      setCollapsedDays((prev) => prev.filter((d) => d !== day));
-    } else {
-      setCollapsedDays((prev) => [...prev, day]);
+    if (!advancedOptions.excludedDays) {
+      advancedOptions.excludedDays = [];
+      setAdvancedOptions({ ...advancedOptions });
     }
-  }
+
+    if (!advancedOptions.collapsedDays) {
+      advancedOptions.collapsedDays = [];
+      setAdvancedOptions({ ...advancedOptions });
+    }
+  }, [advancedOptions, setAdvancedOptions]);
 
   const preProcessedCurriculum = useMemo(
     () =>
@@ -73,7 +104,7 @@ export function CurriculumTable({
     const newSchedule = compensateCurriculum(
       preProcessedCurriculum,
       selectedGroup,
-      excludedDays,
+      advancedOptions.excludedDays,
     );
 
     if (!newSchedule) {
@@ -83,7 +114,7 @@ export function CurriculumTable({
     }
 
     return newSchedule;
-  }, [selectedGroup, preProcessedCurriculum, excludedDays]);
+  }, [selectedGroup, preProcessedCurriculum, advancedOptions.excludedDays]);
 
   function formatGroups(groupNames: string[]): string {
     const groups = groupNames.map((name) => name.replace("A", ""));
@@ -177,7 +208,9 @@ export function CurriculumTable({
                           <Button size="icon" variant="ghost">
                             <ChevronDown
                               className={
-                                collapsedDays.includes(daySchedule.day)
+                                advancedOptions.collapsedDays.includes(
+                                  daySchedule.day,
+                                )
                                   ? "rotate-180"
                                   : ""
                               }
@@ -196,22 +229,13 @@ export function CurriculumTable({
                             variant="ghost"
                             onClick={(e) => {
                               e.stopPropagation();
-
-                              if (!excludedDays.includes(daySchedule.day)) {
-                                setExcludedDays((prev) => [
-                                  ...prev,
-                                  daySchedule.day,
-                                ]);
-                                toggleCollapsed(daySchedule.day, true);
-                              } else {
-                                setExcludedDays((prev) =>
-                                  prev.filter((day) => day !== daySchedule.day),
-                                );
-                              }
+                              toggleExcludedDay(daySchedule.day);
                             }}
                             className="mr-4 ml-auto"
                           >
-                            {excludedDays.includes(daySchedule.day) ? (
+                            {advancedOptions.excludedDays.includes(
+                              daySchedule.day,
+                            ) ? (
                               <Eye />
                             ) : (
                               <EyeOff />
@@ -221,7 +245,7 @@ export function CurriculumTable({
                       </TableCell>
                     </TableRow>
 
-                    {!collapsedDays.includes(daySchedule.day) &&
+                    {!advancedOptions.collapsedDays.includes(daySchedule.day) &&
                       daySchedule.classes.map((classSession, index) => (
                         <TableRow
                           key={`${daySchedule.day}-${index}`}
