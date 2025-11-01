@@ -1,13 +1,4 @@
-type Curriculum = {
-  day: string;
-  classes: {
-    subject: string;
-    type: string;
-    groups: string[];
-    time: string;
-    location: string;
-  }[];
-}[];
+import { UnwrappedCurriculum } from "./curriculum-type";
 
 /**
  * Return a new curriculum filtered to the provided group, compensating
@@ -15,10 +6,10 @@ type Curriculum = {
  * (same subject & type) from non-excluded days. If impossible, returns null.
  */
 export function compensateCurriculum(
-  curriculum: Curriculum,
+  curriculum: UnwrappedCurriculum,
   group: string,
   excludedDays: string[],
-): Curriculum | null {
+): UnwrappedCurriculum | null {
   const excludedSet = new Set(excludedDays);
   function timesConflict(a: string, b: string): boolean {
     return a.trim() === b.trim();
@@ -129,7 +120,7 @@ export function compensateCurriculum(
   }
 
   // Build final curriculum: keep only non-excluded days and only classes relevant to group (original group classes kept + chosen replacements)
-  const result: Curriculum = [];
+  const result: UnwrappedCurriculum = [];
   for (const dayObj of curriculum) {
     if (excludedSet.has(dayObj.day)) continue;
     const classesForDay = remainingByDay.get(dayObj.day) ?? [];

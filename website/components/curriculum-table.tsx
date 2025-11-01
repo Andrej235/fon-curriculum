@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -12,69 +13,26 @@ import { curriculum } from "@/lib/curriculum";
 import { days } from "@/lib/day";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Eye, EyeOff } from "lucide-react";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { toast } from "sonner";
-import { useLocalStorage } from "usehooks-ts";
 import { Button } from "./ui/button";
 
 type CurriculumTableProps = {
   selectedGroup: number;
   excludedClasses: string[];
+  advancedOptions: AdvancedOptions;
+  toggleCollapsed: (day: string) => void;
+  toggleExcludedDay: (day: string) => void;
 };
 
 export function CurriculumTable({
   selectedGroup: selectedGroupId,
   excludedClasses,
+  advancedOptions,
+  toggleCollapsed,
+  toggleExcludedDay,
 }: CurriculumTableProps) {
   const selectedGroup = `A${selectedGroupId}`;
-
-  const [advancedOptions, setAdvancedOptions] =
-    useLocalStorage<AdvancedOptions>("advancedOptions", null!);
-
-  function toggleCollapsed(day: string) {
-    setAdvancedOptions((prev) => ({
-      ...prev,
-      collapsedDays: !prev.collapsedDays.includes(day)
-        ? [...prev.collapsedDays, day]
-        : prev.collapsedDays.filter((d) => d !== day),
-    }));
-  }
-
-  function toggleExcludedDay(day: string) {
-    setAdvancedOptions((prev) => {
-      const alreadyExcluded = prev.excludedDays.includes(day);
-
-      return {
-        ...prev,
-        collapsedDays: !alreadyExcluded
-          ? [...prev.collapsedDays, day]
-          : prev.collapsedDays.filter((d) => d !== day),
-        excludedDays: !alreadyExcluded
-          ? [...prev.excludedDays, day]
-          : prev.excludedDays.filter((d) => d !== day),
-      };
-    });
-  }
-
-  useEffect(() => {
-    if (advancedOptions === null) {
-      setAdvancedOptions({
-        excludedDays: [],
-        collapsedDays: [],
-      });
-      return;
-    }
-
-    if (!advancedOptions.excludedDays) {
-      advancedOptions.excludedDays = [];
-      setAdvancedOptions({ ...advancedOptions });
-    }
-
-    if (!advancedOptions.collapsedDays) {
-      advancedOptions.collapsedDays = [];
-      setAdvancedOptions({ ...advancedOptions });
-    }
-  }, [advancedOptions, setAdvancedOptions]);
 
   const preProcessedCurriculum = useMemo(
     () =>
@@ -109,8 +67,6 @@ export function CurriculumTable({
 
     if (!newSchedule) {
       toast.error("Nije moguće napraviti raspored");
-    } else {
-      toast.success("Raspored je uspešno napravljen");
     }
 
     return newSchedule;
