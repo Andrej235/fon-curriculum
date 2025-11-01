@@ -1,10 +1,10 @@
 import fs from "fs";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
-const url: string = `https://oas.fon.bg.ac.rs/wp-content/uploads/2025/10/PrvaGodinaZimski25-26-sajt-1.nedelja.pdf`;
+const url: string = `https://oas.fon.bg.ac.rs/wp-content/uploads/2025/11/PrvaGodinaZimski25-26.pdf`;
+const days = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak"];
 
 const pdfData = await extractPdfText(url);
-const days = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak"];
 
 const curriculum: {
   [key in string]?: {
@@ -17,7 +17,7 @@ const curriculum: {
 } = {};
 
 const pages = pdfData.split("\n").map((page) => page.replace(/^\d* */, "")); // Map gets rid of page numbers
-const text = pages.join(" ");
+const text = pages.join("  ") + "|";
 
 const dayIndices = days
   .map((day) => text.indexOf(day))
@@ -33,18 +33,20 @@ for (let i = 0; i < dayIndices.length; i++) {
 
   dayText = dayText.slice(dayName.length).trim();
 
-  const test = dayText
-    .split(/(?<=\S) {2}(?=\S)/)
-    .map(($class) => $class.split("   "));
-  console.log(test);
+  const regex =
+    /(.+?)   ([P,V])   (A\d+(?:,A\d+)*)   (\d\d?:\d\d? ?- ?\d\d?:\d\d?)   (.+?)(?:(?<=\S) {2}(?=\S))/g;
+  const matches = dayText
+    .matchAll(regex)
+    .map(([, subject, type, groups, time, location]) => ({
+      subject: subject.replace(/\s+/g, " ").trim(),
+      type,
+      groups: groups.split(",").map((g) => g.trim()),
+      time,
+      location,
+    }))
+    .toArray();
 
-  curriculum[dayName] = test.map(([subject, type, groups, time, location]) => ({
-    subject,
-    type,
-    groups: groups.split(",").map((g) => g.trim()),
-    time,
-    location,
-  }));
+  curriculum[dayName] = matches;
 }
 
 fs.writeFileSync("output.json", JSON.stringify(curriculum));
