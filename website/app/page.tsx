@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { AdvancedOptions } from "@/lib/advanced-options";
 import { BasicOptions } from "@/lib/basic-options";
 import { curriculum } from "@/lib/curriculum";
 import { useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ export default function Home() {
     "basicOptions",
     null,
   );
-  const [, , removeSavedAdvancedOptions] = useLocalStorage(
+  const [, setSavedAdvancedOptions] = useLocalStorage<AdvancedOptions | null>(
     "advancedOptions",
     null,
   );
@@ -47,7 +48,10 @@ export default function Home() {
     };
 
     setSavedOptions(options);
-    removeSavedAdvancedOptions();
+    setSavedAdvancedOptions({
+      collapsedDays: [],
+      excludedDays: [],
+    });
     router.push("/raspored");
   };
 
@@ -86,7 +90,7 @@ export default function Home() {
                 <button
                   key={group}
                   onClick={() => setSelectedGroup(group)}
-                  className={`rounded-md border sm:px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-md border py-2 text-sm font-medium transition-colors sm:px-4 ${
                     selectedGroup === group
                       ? "border-foreground bg-foreground text-background"
                       : "border-border bg-background text-foreground hover:bg-muted"

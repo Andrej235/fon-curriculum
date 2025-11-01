@@ -50,12 +50,12 @@ export default function Curriculum() {
       return;
     }
 
-    if (!advancedOptions.excludedDays) {
+    if (!advancedOptions?.excludedDays) {
       advancedOptions.excludedDays = [];
       setAdvancedOptions({ ...advancedOptions });
     }
 
-    if (!advancedOptions.collapsedDays) {
+    if (!advancedOptions?.collapsedDays) {
       advancedOptions.collapsedDays = [];
       setAdvancedOptions({ ...advancedOptions });
     }
