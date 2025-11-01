@@ -1,5 +1,7 @@
 "use client";
 
+import InfoDialog from "@/components/info-dialog";
+import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -71,13 +73,20 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background p-6 md:p-12">
       <div className="mx-auto max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-foreground">
-            Napravi Svoj Raspored
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Izaberi svoju grupu i predmete koje ne želiš da pohađaš
-          </p>
+        <div className="mb-8 flex flex-col sm:items-center sm:justify-between gap-4 sm:flex-row">
+          <div>
+            <h1 className="text-xl font-semibold text-foreground lg:text-3xl">
+              Napravi Svoj Raspored
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+              Izaberi svoju grupu i predmete koje ne želiš da pohađaš
+            </p>
+          </div>
+
+          <div className="flex gap-2">
+            <InfoDialog />
+            <ThemeToggle />
+          </div>
         </div>
 
         <div className="space-y-8">

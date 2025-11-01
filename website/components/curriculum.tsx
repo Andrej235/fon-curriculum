@@ -3,12 +3,12 @@ import { CurriculumTable } from "@/components/curriculum-table";
 import { Button } from "@/components/ui/button";
 import { AdvancedOptions } from "@/lib/advanced-options";
 import { BasicOptions } from "@/lib/basic-options";
-import { Edit2, Info, Moon, Sun, Trash2 } from "lucide-react";
+import { Edit2, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { Dialog, DialogTrigger } from "./ui/dialog";
-import { useTheme } from "next-themes";
+import InfoDialog from "./info-dialog";
+import ThemeToggle from "./theme-toggle";
 
 export default function Curriculum() {
   const [options] = useLocalStorage<BasicOptions | null>("basicOptions", null);
@@ -17,8 +17,6 @@ export default function Curriculum() {
 
   const group = options?.group ?? null;
   const excludedClasses = options?.excludedClasses ?? [];
-
-  const { resolvedTheme: theme, setTheme } = useTheme();
 
   function toggleCollapsed(day: string) {
     setAdvancedOptions((prev) => ({
@@ -85,25 +83,9 @@ export default function Curriculum() {
               </Link>
             </Button>
 
-            <Dialog>
-              <Button variant="outline" asChild className="max-sm:size-9">
-                <DialogTrigger>
-                  <Info />
-                  <span className="hidden sm:inline">Info</span>
-                </DialogTrigger>
-              </Button>
-            </Dialog>
+            <InfoDialog />
 
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
-                setTheme(theme === "light" ? "dark" : "light");
-              }}
-            >
-              {theme === "dark" && <Sun />}
-              {theme === "light" && <Moon />}
-            </Button>
+            <ThemeToggle />
           </div>
         </header>
 
