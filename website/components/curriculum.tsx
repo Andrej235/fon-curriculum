@@ -3,10 +3,12 @@ import { CurriculumTable } from "@/components/curriculum-table";
 import { Button } from "@/components/ui/button";
 import { AdvancedOptions } from "@/lib/advanced-options";
 import { BasicOptions } from "@/lib/basic-options";
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Info, Moon, Sun, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { Dialog, DialogTrigger } from "./ui/dialog";
+import { useTheme } from "next-themes";
 
 export default function Curriculum() {
   const [options] = useLocalStorage<BasicOptions | null>("basicOptions", null);
@@ -15,6 +17,8 @@ export default function Curriculum() {
 
   const group = options?.group ?? null;
   const excludedClasses = options?.excludedClasses ?? [];
+
+  const { resolvedTheme: theme, setTheme } = useTheme();
 
   function toggleCollapsed(day: string) {
     setAdvancedOptions((prev) => ({
@@ -64,7 +68,7 @@ export default function Curriculum() {
   return (
     <main className="min-h-screen bg-background px-2 py-6 sm:px-6 md:p-12">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-4 flex items-center justify-center gap-2 sm:mb-8 sm:justify-between">
+        <header className="mb-4 flex flex-col items-center justify-center gap-2 sm:mb-8 sm:flex-row sm:justify-between">
           <div>
             {group && (
               <h1 className="text-xl font-semibold text-foreground xl:text-3xl">
@@ -72,12 +76,35 @@ export default function Curriculum() {
               </h1>
             )}
           </div>
-          <Button variant="outline" asChild className="max-sm:size-9">
-            <Link href="/">
-              <Edit2 className="sm:hidden" />
-              <span className="hidden sm:inline">Promeni Opcije</span>
-            </Link>
-          </Button>
+
+          <div className="flex gap-2">
+            <Button variant="outline" asChild className="max-sm:size-9">
+              <Link href="/">
+                <Edit2 />
+                <span className="hidden sm:inline">Promeni Opcije</span>
+              </Link>
+            </Button>
+
+            <Dialog>
+              <Button variant="outline" asChild className="max-sm:size-9">
+                <DialogTrigger>
+                  <Info />
+                  <span className="hidden sm:inline">Info</span>
+                </DialogTrigger>
+              </Button>
+            </Dialog>
+
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                setTheme(theme === "light" ? "dark" : "light");
+              }}
+            >
+              {theme === "dark" && <Sun />}
+              {theme === "light" && <Moon />}
+            </Button>
+          </div>
         </header>
 
         {group && (
