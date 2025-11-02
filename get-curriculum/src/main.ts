@@ -27,14 +27,14 @@ for (let i = 0; i < dayIndices.length; i++) {
   const start = dayIndices[i];
   const end = dayIndices[i + 1] ?? text.length;
 
-  let dayText = text.slice(start, end).trim();
+  let dayText = text.slice(start, end).trim() + "  |";
   const dayName = days.find((day) => dayText.startsWith(day));
   if (!dayName) continue;
 
   dayText = dayText.slice(dayName.length).trim();
 
   const regex =
-    /(.+?)   ([P,V])   (A\d+(?:,A\d+)*)   (\d\d?:\d\d? ?- ?\d\d?:\d\d?)   (.+?)(?:(?<=\S) {2}(?=\S))/g;
+    /(.+?)   ([P,V])   (A\d+(?:,\s*A\d+)*)   (\d\d?:\d\d? ?- ?\d\d?:\d\d?)   (.+?)(?:(?<=\S) {2}(?=\S))/g;
   const matches = dayText
     .matchAll(regex)
     .map(([, subject, type, groups, time, location]) => ({

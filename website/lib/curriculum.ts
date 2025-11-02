@@ -165,7 +165,7 @@ export const curriculum: Curriculum = {
         "A10",
         "A11",
         "A12",
-        "A13 ",
+        "A13",
       ],
       time: "16:15 - 18:00",
       location: "Amfiteatar 1",
