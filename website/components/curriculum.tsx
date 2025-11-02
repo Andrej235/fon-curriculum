@@ -15,6 +15,11 @@ export default function Curriculum() {
   const [advancedOptions, setAdvancedOptions] =
     useLocalStorage<AdvancedOptions>("advancedOptions", null!);
 
+  const [, setForceOptionsChange] = useLocalStorage<boolean>(
+    "forceOptionsChange",
+    false,
+  );
+
   const group = options?.group ?? null;
   const excludedClasses = options?.excludedClasses ?? [];
 
@@ -77,7 +82,12 @@ export default function Curriculum() {
 
           <div className="flex gap-2">
             <Button variant="outline" asChild className="max-sm:size-9">
-              <Link href="/">
+              <Link
+                href="/"
+                onClick={() => {
+                  setForceOptionsChange(true);
+                }}
+              >
                 <Edit2 />
                 <span className="hidden sm:inline">Promeni Opcije</span>
               </Link>
