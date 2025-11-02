@@ -149,6 +149,34 @@ export const curriculum: Curriculum = {
       time: "14:15 - 16:00",
       location: "16",
     },
+    {
+      subject: "Osnovi organizacije",
+      type: "P",
+      groups: [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "A11",
+        "A12",
+        "A13 ",
+      ],
+      time: "16:15 - 18:00",
+      location: "Amfiteatar 1",
+    },
+    {
+      subject: "Menadžment",
+      type: "V",
+      groups: ["A17"],
+      time: "16:15 - 18:00",
+      location: "13",
+    },
   ],
   Utorak: [
     {
@@ -375,6 +403,13 @@ export const curriculum: Curriculum = {
       time: "16:15 - 18:00",
       location: "07",
     },
+    {
+      subject: "Osnovi organizacije",
+      type: "V",
+      groups: ["A12"],
+      time: "16:15 - 18:00",
+      location: "21",
+    },
   ],
   Sreda: [
     {
@@ -579,6 +614,13 @@ export const curriculum: Curriculum = {
       groups: ["A10", "A17", "A18"],
       time: "16:15 - 18:00",
       location: "Amfiteatar 3",
+    },
+    {
+      subject: "Menadžment",
+      type: "V",
+      groups: ["A6"],
+      time: "16:15 - 18:00",
+      location: "12",
     },
   ],
   Četvrtak: [
@@ -805,6 +847,13 @@ export const curriculum: Curriculum = {
       groups: ["A1"],
       time: "16:15 - 18:00",
       location: "30",
+    },
+    {
+      subject: "Ekonomija",
+      type: "V",
+      groups: ["A14"],
+      time: "16:15 - 18:00",
+      location: "20",
     },
   ],
   Petak: [
