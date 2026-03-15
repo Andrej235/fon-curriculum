@@ -2,23 +2,47 @@
 
 import Curriculum from "@/components/curriculum";
 import { BasicOptions } from "@/lib/basic-options";
+import { curriculum } from "@/lib/curriculum";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
-  const [options] = useLocalStorage<BasicOptions | null>("basicOptions", null);
+  const [options, setOptions] = useLocalStorage<BasicOptions | null>(
+    "basicOptions",
+    null,
+  );
   const router = useRouter();
 
   useEffect(() => {
     if (!options) {
       router.push("/");
-    } else {
-      setLoading(false);
+      return;
     }
-  }, [options, router]);
+
+    const allClasses = Array.from(
+      new Set(
+        Object.keys(curriculum)
+          .flatMap((day) => curriculum[day])
+          .filter((x) => x.groups.includes(`A${options.group}`))
+          .map((x) => x.subject),
+      ),
+    ).sort();
+
+    if (options.excludedClasses.some((e) => !allClasses.includes(e))) {
+      setOptions(null);
+      router.push("/");
+      toast.info(
+        "Vaše prethodne opcije su nevažeće zbog promjena u rasporedu. Molimo vas da ih ponovo postavite.",
+      );
+      return;
+    }
+
+    setLoading(false);
+  }, [options, setOptions, router]);
 
   return (
     <>
