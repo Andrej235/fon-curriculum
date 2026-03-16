@@ -1,5 +1,7 @@
 import { Curriculum } from "./curriculum-type";
 
+export const curriculumLastUpdate = new Date("2025-03-15");
+
 export const curriculum: Curriculum = {
   Ponedeljak: [
     {
