@@ -8,70 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AdvancedOptions } from "@/lib/advanced-options";
-import { compensateCurriculum } from "@/lib/compensate-curriculum";
-import { curriculum } from "@/lib/curriculum";
+import { CurriculumDay } from "@/lib/curriculum-day";
 import { days } from "@/lib/day";
-import { cn } from "@/lib/utils";
-import { ChevronDown, Eye, EyeOff } from "lucide-react";
-import { Fragment, useMemo } from "react";
-import { toast } from "sonner";
+import { ChevronDown } from "lucide-react";
+import { Fragment } from "react";
 import { Button } from "./ui/button";
 
 type CurriculumTableProps = {
-  selectedGroup: number;
-  excludedClasses: string[];
   advancedOptions: AdvancedOptions;
   toggleCollapsed: (day: string) => void;
-  toggleExcludedDay: (day: string) => void;
+  curriculum: CurriculumDay[];
 };
 
 export function CurriculumTable({
-  selectedGroup: selectedGroupId,
-  excludedClasses,
   advancedOptions,
   toggleCollapsed,
-  toggleExcludedDay,
+  curriculum: curriculumData,
 }: CurriculumTableProps) {
-  const selectedGroup = `A${selectedGroupId}`;
-
-  const preProcessedCurriculum = useMemo(
-    () =>
-      Object.keys(curriculum).map((day) => ({
-        day,
-        classes: curriculum[day].filter(
-          (cls) => !excludedClasses.includes(cls.subject),
-        ),
-      })),
-    [excludedClasses],
-  );
-
-  const preProcessedGroupCurriculum = useMemo(
-    () =>
-      Object.keys(curriculum).map((day) => ({
-        day,
-        classes: curriculum[day].filter(
-          (cls) =>
-            !excludedClasses.includes(cls.subject) &&
-            cls.groups.includes(selectedGroup),
-        ),
-      })),
-    [excludedClasses, selectedGroup],
-  );
-
-  const scheduleData = useMemo(() => {
-    const newSchedule = compensateCurriculum(
-      preProcessedCurriculum,
-      selectedGroup,
-      advancedOptions.excludedDays,
-    );
-
-    if (!newSchedule) {
-      toast.error("Nije moguće napraviti raspored");
-    }
-
-    return newSchedule;
-  }, [selectedGroup, preProcessedCurriculum, advancedOptions.excludedDays]);
-
   function formatGroups(groupNames: string[]): string {
     const groups = groupNames.map((name) => name.replace("A", ""));
     if (groups.length === 1) return `Grupa ${groups[0]}`;
@@ -135,121 +88,78 @@ export function CurriculumTable({
         </TableHeader>
 
         <TableBody>
-          {days.map((day) => {
-            const processedDaySchedule = scheduleData?.filter(
-              (schedule) => schedule.day === day,
-            )[0];
-            const excluded = !processedDaySchedule;
-
-            const daySchedule =
-              processedDaySchedule ??
-              preProcessedGroupCurriculum.filter(
-                (schedule) => schedule.day === day,
-              )[0];
+          {curriculumData.map((daySchedule, i) => {
+            const dayName = days[i];
 
             return (
-              <Fragment key={daySchedule.day}>
-                {daySchedule.classes.length > 0 && (
-                  <>
+              <Fragment key={dayName}>
+                <TableRow
+                  key={dayName}
+                  className="w-full min-w-full bg-muted/50 py-3"
+                  onClick={() => toggleCollapsed(dayName)}
+                >
+                  <TableCell
+                    colSpan={5}
+                    className="font-semibold text-foreground"
+                  >
+                    <div className="flex items-center">
+                      <Button size="icon" variant="ghost">
+                        <ChevronDown
+                          className={
+                            advancedOptions.collapsedDays.includes(dayName)
+                              ? "rotate-180"
+                              : ""
+                          }
+                        />
+                      </Button>
+
+                      <p>{dayName}</p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+
+                {!advancedOptions.collapsedDays.includes(dayName) &&
+                  daySchedule.map((classSession, index) => (
                     <TableRow
-                      key={daySchedule.day}
-                      className="w-full min-w-full bg-muted/50 py-3"
-                      onClick={() => toggleCollapsed(daySchedule.day)}
+                      key={`${dayName}-${index}`}
+                      className="hover:bg-muted/30"
                     >
-                      <TableCell
-                        colSpan={5}
-                        className="font-semibold text-foreground"
-                      >
-                        <div className="flex items-center">
-                          <Button size="icon" variant="ghost">
-                            <ChevronDown
-                              className={
-                                advancedOptions.collapsedDays.includes(
-                                  daySchedule.day,
+                      <TableCell className="font-mono text-sm text-muted-foreground">
+                        {classSession.time}
+                      </TableCell>
+
+                      <TableCell className="max-sm:hidden">
+                        <span className="text-muted-foreground">
+                          {formatClassType(classSession.type)}
+                        </span>
+                      </TableCell>
+
+                      <TableCell className="font-medium text-foreground">
+                        <span className="max-sm:hidden">
+                          {classSession.subject}
+                        </span>
+                        <span className="sm:hidden">
+                          {classSession.subject.length > 30
+                            ? `${classSession.subject
+                                .split(" ")
+                                .map((x) =>
+                                  x.length > 1 ? x[0].toUpperCase() : x,
                                 )
-                                  ? "rotate-180"
-                                  : ""
-                              }
-                            />
-                          </Button>
+                                .join("")}`
+                            : classSession.subject}
+                        </span>{" "}
+                        <span className="sm:hidden">({classSession.type})</span>
+                      </TableCell>
 
-                          <p
-                            className={cn(excluded && "text-muted-foreground")}
-                          >
-                            {daySchedule.day}
-                            {excluded && <span> (isključen)</span>}
-                          </p>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {formatGroups(classSession.groups)}
+                      </TableCell>
 
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleExcludedDay(daySchedule.day);
-                            }}
-                            className="mr-4 ml-auto"
-                          >
-                            {advancedOptions.excludedDays.includes(
-                              daySchedule.day,
-                            ) ? (
-                              <Eye />
-                            ) : (
-                              <EyeOff />
-                            )}
-                          </Button>
-                        </div>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {classSession.location}
                       </TableCell>
                     </TableRow>
-
-                    {!advancedOptions.collapsedDays.includes(daySchedule.day) &&
-                      daySchedule.classes.map((classSession, index) => (
-                        <TableRow
-                          key={`${daySchedule.day}-${index}`}
-                          className={cn(
-                            "hover:bg-muted/30",
-                            excluded && "opacity-50",
-                          )}
-                        >
-                          <TableCell className="font-mono text-sm text-muted-foreground">
-                            {classSession.time}
-                          </TableCell>
-
-                          <TableCell className="max-sm:hidden">
-                            <span className="text-muted-foreground">
-                              {formatClassType(classSession.type)}
-                            </span>
-                          </TableCell>
-
-                          <TableCell className="font-medium text-foreground">
-                            <span className="max-sm:hidden">
-                              {classSession.subject}
-                            </span>
-                            <span className="sm:hidden">
-                              {classSession.subject.length > 30
-                                ? `${classSession.subject
-                                    .split(" ")
-                                    .map((x) =>
-                                      x.length > 1 ? x[0].toUpperCase() : x,
-                                    )
-                                    .join("")}`
-                                : classSession.subject}
-                            </span>{" "}
-                            <span className="sm:hidden">
-                              ({classSession.type})
-                            </span>
-                          </TableCell>
-
-                          <TableCell className="text-sm text-muted-foreground">
-                            {formatGroups(classSession.groups)}
-                          </TableCell>
-
-                          <TableCell className="text-sm text-muted-foreground">
-                            {classSession.location}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </>
-                )}
+                  ))}
               </Fragment>
             );
           })}

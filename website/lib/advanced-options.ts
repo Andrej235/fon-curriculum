@@ -1,4 +1,7 @@
 export type AdvancedOptions = {
-  excludedDays: string[];
   collapsedDays: string[];
+};
+
+export const defaultAdvancedOptions: AdvancedOptions = {
+  collapsedDays: [],
 };

@@ -6,13 +6,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Checkbox } from "./ui/checkbox";
 import {
   Field,
   FieldGroup,
@@ -21,7 +21,6 @@ import {
   FieldSet,
 } from "./ui/field";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
-import { Checkbox } from "./ui/checkbox";
 
 type PresetSelectorProps = {
   onSelect: (curriculum: CurriculumDay[]) => void;
@@ -95,12 +94,6 @@ export function PresetSelector({ onSelect }: PresetSelectorProps) {
       <CardHeader>
         <CardTitle>Napravi raspored po svojoj grupi i predmetima</CardTitle>
         <CardDescription>Ili nastavi sa praznim rasporedom</CardDescription>
-
-        <CardAction>
-          <Button onClick={() => onSelect([[], [], [], [], []])}>
-            Prazan raspored
-          </Button>
-        </CardAction>
       </CardHeader>
 
       <CardContent>
@@ -166,9 +159,16 @@ export function PresetSelector({ onSelect }: PresetSelectorProps) {
         </FieldSet>
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="justify-end gap-2">
+        <Button
+          onClick={() => onSelect([[], [], [], [], []])}
+          variant="outline"
+        >
+          Prazan raspored
+        </Button>
+
         <Button disabled={!selectedGroup} onClick={handleContinue}>
-          Nastavi
+          Napravi
         </Button>
       </CardFooter>
     </Card>
