@@ -14,21 +14,27 @@ import {
   defaultAdvancedOptions,
 } from "@/lib/advanced-options";
 import { defaultCurriculum, type Curriculum } from "@/lib/curriculum-type";
-import { days } from "@/lib/day";
+import { Day, days } from "@/lib/day";
 import { formatClassType } from "@/lib/format-class-type";
 import { formatGroupNames } from "@/lib/format-group-names";
+import { curriculumLastUpdate } from "@/lib/global-curriculum";
 import { cn } from "@/lib/utils";
-import { ChevronDown, TableIcon, Loader2 } from "lucide-react";
+import { ChevronDown, Loader2, Plus, TableIcon } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import InfoDialog from "./info-dialog";
 import ThemeToggle from "./theme-toggle";
-import { curriculumLastUpdate } from "@/lib/global-curriculum";
-import { toast } from "sonner";
+import { CurriculumDay } from "@/lib/curriculum-day";
+import { timeTable } from "@/lib/time-table";
 
 export default function Curriculum() {
   const [loading, setLoading] = useState(true);
   const [presetDialogOpen, setPresetDialogOpen] = useState(false);
+
+  const [addingClassesToDay, setAddingClassesToDay] = useState<Day | null>(
+    null,
+  );
 
   const [curriculum, setCurriculum] = useLocalStorage<Curriculum | null>(
     "curriculum",
@@ -123,7 +129,12 @@ export default function Curriculum() {
                   <Fragment key={dayName}>
                     <TableRow
                       key={dayName}
-                      className="w-full min-w-full bg-muted/50 py-3"
+                      className={cn(
+                        "w-full min-w-full bg-muted/50 py-3",
+                        addingClassesToDay &&
+                          addingClassesToDay !== dayName &&
+                          "opacity-50",
+                      )}
                       onClick={() => toggleCollapsed(dayName)}
                     >
                       <TableCell
@@ -149,12 +160,30 @@ export default function Curriculum() {
                           >
                             {dayName}
                           </p>
+
+                          <div className="ml-auto">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setAddingClassesToDay(
+                                  addingClassesToDay === dayName
+                                    ? null
+                                    : dayName,
+                                );
+                              }}
+                            >
+                              <Plus />
+                            </Button>
+                          </div>
                         </div>
                       </TableCell>
                     </TableRow>
 
                     {!advancedOptions.collapsedDays.includes(dayName) &&
-                      daySchedule.length === 0 && (
+                      daySchedule.length === 0 &&
+                      addingClassesToDay !== dayName && (
                         <TableRow className="w-full min-w-full">
                           <TableCell
                             colSpan={5}
@@ -166,49 +195,78 @@ export default function Curriculum() {
                       )}
 
                     {!advancedOptions.collapsedDays.includes(dayName) &&
-                      daySchedule.map((classSession, index) => (
-                        <TableRow
-                          key={`${dayName}-${index}`}
-                          className="hover:bg-muted/30"
-                        >
-                          <TableCell className="font-mono text-sm text-muted-foreground">
-                            {classSession.time}
-                          </TableCell>
+                      (addingClassesToDay === dayName
+                        ? addPaddingClasses(daySchedule)
+                        : daySchedule
+                      ).map((classSession, index) => {
+                        if (!classSession) {
+                          return (
+                            <TableRow
+                              key={`${dayName}-empty-${index}`}
+                              className="relative hover:bg-muted/30"
+                            >
+                              <TableCell className="font-mono text-sm text-muted-foreground">
+                                {timeTable[index]}
+                              </TableCell>
 
-                          <TableCell className="max-sm:hidden">
-                            <span className="text-muted-foreground">
-                              {formatClassType(classSession.type)}
-                            </span>
-                          </TableCell>
+                              <TableCell colSpan={4} />
 
-                          <TableCell className="font-medium text-foreground">
-                            <span className="max-sm:hidden">
-                              {classSession.subject}
-                            </span>
-                            <span className="sm:hidden">
-                              {classSession.subject.length > 30
-                                ? `${classSession.subject
-                                    .split(" ")
-                                    .map((x) =>
-                                      x.length > 1 ? x[0].toUpperCase() : x,
-                                    )
-                                    .join("")}`
-                                : classSession.subject}
-                            </span>{" "}
-                            <span className="sm:hidden">
-                              ({classSession.type})
-                            </span>
-                          </TableCell>
+                              <button className="absolute inset-0 grid place-items-center">
+                                <Plus className="size-4" />
+                              </button>
+                            </TableRow>
+                          );
+                        }
 
-                          <TableCell className="text-sm text-muted-foreground">
-                            {formatGroupNames(classSession.groups)}
-                          </TableCell>
+                        return (
+                          <TableRow
+                            key={`${dayName}-${index}`}
+                            className={cn(
+                              "hover:bg-muted/30",
+                              addingClassesToDay &&
+                                addingClassesToDay !== dayName &&
+                                "opacity-50",
+                            )}
+                          >
+                            <TableCell className="font-mono text-sm text-muted-foreground">
+                              {classSession.time}
+                            </TableCell>
 
-                          <TableCell className="text-sm text-muted-foreground">
-                            {classSession.location}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                            <TableCell className="max-sm:hidden">
+                              <span className="text-muted-foreground">
+                                {formatClassType(classSession.type)}
+                              </span>
+                            </TableCell>
+
+                            <TableCell className="font-medium text-foreground">
+                              <span className="max-sm:hidden">
+                                {classSession.subject}
+                              </span>
+                              <span className="sm:hidden">
+                                {classSession.subject.length > 30
+                                  ? `${classSession.subject
+                                      .split(" ")
+                                      .map((x) =>
+                                        x.length > 1 ? x[0].toUpperCase() : x,
+                                      )
+                                      .join("")}`
+                                  : classSession.subject}
+                              </span>{" "}
+                              <span className="sm:hidden">
+                                ({classSession.type})
+                              </span>
+                            </TableCell>
+
+                            <TableCell className="text-sm text-muted-foreground">
+                              {formatGroupNames(classSession.groups)}
+                            </TableCell>
+
+                            <TableCell className="text-sm text-muted-foreground">
+                              {classSession.location}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                   </Fragment>
                 );
               })}
@@ -239,4 +297,19 @@ export default function Curriculum() {
       />
     </main>
   );
+}
+
+function addPaddingClasses(
+  daySchedule: CurriculumDay,
+): (CurriculumDay[number] | null)[] {
+  const paddedSchedule: (CurriculumDay[number] | null)[] = [];
+
+  timeTable.forEach((time) => {
+    const classAtTime = daySchedule.find(
+      (classSession) => classSession.time === time,
+    );
+    paddedSchedule.push(classAtTime ?? null);
+  });
+
+  return paddedSchedule;
 }
