@@ -1,5 +1,5 @@
 "use client";
-import { curriculum } from "@/lib/curriculum";
+import { globalCurriculum } from "@/lib/global-curriculum";
 import { CurriculumDay } from "@/lib/curriculum-day";
 import { days } from "@/lib/day";
 import { useEffect, useMemo, useState } from "react";
@@ -24,7 +24,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 const groups = Array.from(
-  new Set(days.flatMap((day) => curriculum[day].flatMap((c) => c.groups))),
+  new Set(days.flatMap((day) => globalCurriculum[day].flatMap((c) => c.groups))),
 );
 
 const yearNames = ["A", "B", "C", "D"];
@@ -56,7 +56,7 @@ export function PresetSelectorDialog({
     if (!selectedGroup) return [];
 
     return days.flatMap((day) =>
-      curriculum[day].filter((x) =>
+      globalCurriculum[day].filter((x) =>
         x.groups.includes(yearNames[selectedYear] + selectedGroup),
       ),
     );
@@ -85,7 +85,7 @@ export function PresetSelectorDialog({
     const selectedGroupName = yearNames[selectedYear] + selectedGroup;
 
     const filtered = days.map((day) =>
-      curriculum[day].filter(
+      globalCurriculum[day].filter(
         (c) =>
           c.groups.includes(selectedGroupName) &&
           selectedSubjects.includes(c.subject),

@@ -1,7 +1,7 @@
 "use client";
 
 import Curriculum from "@/components/curriculum";
-import { curriculumLastUpdate } from "@/lib/curriculum";
+import { curriculumLastUpdate } from "@/lib/global-curriculum";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

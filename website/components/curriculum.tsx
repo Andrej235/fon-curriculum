@@ -14,6 +14,7 @@ import {
   defaultAdvancedOptions,
 } from "@/lib/advanced-options";
 import { CurriculumDay } from "@/lib/curriculum-day";
+import { defaultCurriculum } from "@/lib/curriculum-type";
 import { days } from "@/lib/day";
 import { formatClassType } from "@/lib/format-class-type";
 import { formatGroupNames } from "@/lib/format-group-names";
@@ -30,7 +31,7 @@ export default function Curriculum() {
 
   const [curriculum, setCurriculum] = useLocalStorage<CurriculumDay[]>(
     "curriculum",
-    [[], [], [], [], []],
+    defaultCurriculum,
   );
 
   function toggleCollapsed(day: string) {
@@ -76,7 +77,7 @@ export default function Curriculum() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-32 font-semibold">Vreme</TableHead>
+                <TableHead className="w-32 pl-4 font-semibold">Vreme</TableHead>
                 <TableHead className="w-40 font-semibold max-sm:hidden">
                   Tip
                 </TableHead>

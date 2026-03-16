@@ -1,8 +1,13 @@
-import { Curriculum } from "./curriculum-type";
+import { CurriculumDay } from "./curriculum-day";
+import { Day } from "./day";
 
 export const curriculumLastUpdate = new Date("2025-03-15");
 
-export const curriculum: Curriculum = {
+type GlobalCurriculum = {
+  [Key in Day]: CurriculumDay;
+};
+
+export const globalCurriculum: GlobalCurriculum = {
   Ponedeljak: [
     {
       subject: "Psihologija",
