@@ -1,12 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
-  const allowedRoutes = ["/", "/raspored", "/raspored/"];
-  if (allowedRoutes.includes(request.nextUrl.pathname)) {
-    return NextResponse.next();
-  }
-
-  return NextResponse.redirect(new URL("/raspored", request.url));
+  return NextResponse.redirect(new URL("/", request.url));
 }
 
 export const config = {

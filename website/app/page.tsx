@@ -1,67 +1,59 @@
 "use client";
 
-import { PresetSelectorDialog } from "@/components/preset-selector-dialog";
-import { AdvancedOptions } from "@/lib/advanced-options";
-import { CurriculumDay } from "@/lib/curriculum-day";
+import Curriculum from "@/components/curriculum";
+import { curriculumLastUpdate } from "@/lib/curriculum";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 
-export default function Home() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const [presetDialogOpen, setPresetDialogOpen] = useState(true);
+export default function Page() {
+  const [loading, setLoading] = useState(true);
 
-  const [, setCurriculum] = useLocalStorage<CurriculumDay[] | null>(
-    "curriculum",
+  const [curriculum, setCurriculum] = useLocalStorage("curriculum", null);
+  const [lastUpdateTimeMs, setLastUpdate] = useLocalStorage<number | null>(
+    "curriculum-last-update",
     null,
-  );
-
-  function handleSelectPreset(curriculum: CurriculumDay[]) {
-    setCurriculum(curriculum);
-    handleContinue();
-  }
-
-  const [, setSavedAdvancedOptions] = useLocalStorage<AdvancedOptions | null>(
-    "advancedOptions",
-    null,
-  );
-  const [forceOptionsChange, setForceOptionsChange] = useLocalStorage<boolean>(
-    "forceOptionsChange",
-    false,
   );
 
   useEffect(() => {
-    if (!forceOptionsChange) {
-      router.push("/raspored");
-      return;
+    if (!curriculum && lastUpdateTimeMs) {
+      // corrupted state, just clean it up
+      setLastUpdate(null);
     }
 
-    setIsLoading(false);
-  }, [router, forceOptionsChange]);
+    if (curriculum && !lastUpdateTimeMs) {
+      // corrupted state, assume curriculum is up to date but warn the user that it might be outdated
+      toast.warning(
+        "Podaci o rasporedu izgledaju oštećeno, molimo vas da proverite da li je raspored ažuran. Ako nije ili nastavite da vidite ovu poruku, molimo vas da resetujete podatke o rasporedu.",
+      );
+      setLastUpdate(new Date().getTime());
+    }
 
-  const handleContinue = () => {
-    setSavedAdvancedOptions({
-      collapsedDays: [],
-    });
-    setForceOptionsChange(false);
-    router.push("/raspored");
-  };
+    if (curriculum && lastUpdateTimeMs) {
+      console.log(lastUpdateTimeMs);
+
+      if (lastUpdateTimeMs < curriculumLastUpdate.getTime()) {
+        toast.info(
+          "Podaci o rasporedu su zastareli, molimo vas da ih ponovo kreirate.",
+        );
+        setCurriculum(null);
+        setLastUpdate(null);
+      }
+    }
+
+    setLoading(false);
+  }, [curriculum, lastUpdateTimeMs, setLastUpdate, setCurriculum]);
 
   return (
-    <main className="min-h-screen bg-background p-6 md:p-12">
-      {isLoading && (
-        <Loader2 className="absolute top-1/2 left-1/2 z-10 size-8 -translate-1/2 animate-spin text-muted-foreground" />
+    <>
+      {loading && (
+        <div className="h-screen">
+          <Loader2 className="absolute top-1/2 left-1/2 z-10 size-8 -translate-1/2 animate-spin text-muted-foreground" />
+        </div>
       )}
 
-      {!isLoading && (
-        <PresetSelectorDialog
-          open={presetDialogOpen}
-          setOpen={setPresetDialogOpen}
-          onSelect={handleSelectPreset}
-        />
-      )}
-    </main>
+      {!loading && <Curriculum />}
+    </>
   );
 }
