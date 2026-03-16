@@ -1,7 +1,7 @@
 "use client";
-import { globalCurriculum } from "@/lib/global-curriculum";
-import { CurriculumDay } from "@/lib/curriculum-day";
+import { Curriculum } from "@/lib/curriculum-type";
 import { days } from "@/lib/day";
+import { globalCurriculum } from "@/lib/global-curriculum";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
@@ -19,12 +19,15 @@ import {
   FieldGroup,
   FieldLabel,
   FieldLegend,
+  FieldSeparator,
   FieldSet,
 } from "./ui/field";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 const groups = Array.from(
-  new Set(days.flatMap((day) => globalCurriculum[day].flatMap((c) => c.groups))),
+  new Set(
+    days.flatMap((day) => globalCurriculum[day].flatMap((c) => c.groups)),
+  ),
 );
 
 const yearNames = ["A", "B", "C", "D"];
@@ -41,7 +44,7 @@ const groupsByYear = yearNames.map((prefix) => ({
 type PresetSelectorProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  onSelect: (curriculum: CurriculumDay[]) => void;
+  onSelect: (curriculum: Curriculum) => void;
 };
 
 export function PresetSelectorDialog({
@@ -98,7 +101,7 @@ export function PresetSelectorDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             Napravi raspored po svojoj grupi i predmetima
@@ -150,26 +153,56 @@ export function PresetSelectorDialog({
             </Field>
           </FieldGroup>
 
-          <FieldGroup className="grid grid-cols-2 gap-4">
-            {groupSubjects.map((subject) => (
-              <Field orientation="horizontal" key={subject}>
-                <Checkbox
-                  id={subject}
-                  checked={selectedSubjects.includes(subject)}
-                  onCheckedChange={(x) =>
-                    setSelectedSubjects((prev) =>
-                      x
-                        ? [...prev, subject]
-                        : prev.filter((s) => s !== subject),
-                    )
-                  }
-                />
+          <FieldGroup className="gap-2">
+            <FieldLegend>
+              Odaberi predmete koje želiš da dodaš u raspored
+            </FieldLegend>
 
-                <FieldLabel htmlFor={subject} className="font-normal">
-                  {subject}
-                </FieldLabel>
-              </Field>
-            ))}
+            <Field orientation="horizontal">
+              <Checkbox
+                id="select-all"
+                checked={
+                  groupSubjects.length === 0
+                    ? false
+                    : selectedSubjects.length === groupSubjects.length
+                      ? true
+                      : selectedSubjects.length > 0
+                        ? "indeterminate"
+                        : false
+                }
+                onCheckedChange={(x) =>
+                  setSelectedSubjects(x ? groupSubjects : [])
+                }
+              />
+
+              <FieldLabel htmlFor="select-all" className="font-medium">
+                Odaberi sve
+              </FieldLabel>
+            </Field>
+
+            <FieldSeparator className="max-w-4" />
+
+            <div className="grid gap-4 lg:grid-cols-2">
+              {groupSubjects.map((subject) => (
+                <Field orientation="horizontal" key={subject}>
+                  <Checkbox
+                    id={subject}
+                    checked={selectedSubjects.includes(subject)}
+                    onCheckedChange={(x) =>
+                      setSelectedSubjects((prev) =>
+                        x
+                          ? [...prev, subject]
+                          : prev.filter((s) => s !== subject),
+                      )
+                    }
+                  />
+
+                  <FieldLabel htmlFor={subject} className="font-normal">
+                    {subject}
+                  </FieldLabel>
+                </Field>
+              ))}
+            </div>
           </FieldGroup>
         </FieldSet>
 

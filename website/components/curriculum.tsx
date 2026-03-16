@@ -13,26 +13,68 @@ import {
   AdvancedOptions,
   defaultAdvancedOptions,
 } from "@/lib/advanced-options";
-import { CurriculumDay } from "@/lib/curriculum-day";
-import { defaultCurriculum } from "@/lib/curriculum-type";
+import { defaultCurriculum, type Curriculum } from "@/lib/curriculum-type";
 import { days } from "@/lib/day";
 import { formatClassType } from "@/lib/format-class-type";
 import { formatGroupNames } from "@/lib/format-group-names";
-import { ChevronDown, TableIcon } from "lucide-react";
-import { Fragment, useState } from "react";
+import { cn } from "@/lib/utils";
+import { ChevronDown, TableIcon, Loader2 } from "lucide-react";
+import { Fragment, useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import InfoDialog from "./info-dialog";
 import ThemeToggle from "./theme-toggle";
+import { curriculumLastUpdate } from "@/lib/global-curriculum";
+import { toast } from "sonner";
 
 export default function Curriculum() {
+  const [loading, setLoading] = useState(true);
   const [presetDialogOpen, setPresetDialogOpen] = useState(false);
+
+  const [curriculum, setCurriculum] = useLocalStorage<Curriculum | null>(
+    "curriculum",
+    null,
+  );
+  const [lastUpdateTimeMs, setLastUpdate] = useLocalStorage<number | null>(
+    "curriculum-last-update",
+    null,
+  );
   const [advancedOptions, setAdvancedOptions] =
     useLocalStorage<AdvancedOptions>("advancedOptions", defaultAdvancedOptions);
 
-  const [curriculum, setCurriculum] = useLocalStorage<CurriculumDay[]>(
-    "curriculum",
-    defaultCurriculum,
-  );
+  useEffect(() => {
+    if (!curriculum && lastUpdateTimeMs) {
+      // corrupted state, just clean it up
+      setLastUpdate(null);
+    }
+
+    if (curriculum && !lastUpdateTimeMs) {
+      // corrupted state, assume curriculum is up to date but warn the user that it might be outdated
+      toast.warning(
+        "Podaci o rasporedu izgledaju oštećeno, molimo vas da proverite da li je raspored ažuran. Ako nije ili nastavite da vidite ovu poruku, molimo vas da resetujete podatke o rasporedu.",
+      );
+      setLastUpdate(new Date().getTime());
+    }
+
+    if (curriculum && lastUpdateTimeMs) {
+      console.log(lastUpdateTimeMs);
+
+      if (lastUpdateTimeMs < curriculumLastUpdate.getTime()) {
+        toast.info(
+          "Podaci o rasporedu su zastareli, molimo vas da ih ponovo kreirate.",
+        );
+        setCurriculum(null);
+        setLastUpdate(null);
+      }
+    }
+
+    setLoading(false);
+  }, [curriculum, lastUpdateTimeMs, setLastUpdate, setCurriculum]);
+
+  useEffect(() => {
+    if (!!curriculum) return;
+
+    setPresetDialogOpen(true);
+  }, [curriculum]);
 
   function toggleCollapsed(day: string) {
     setAdvancedOptions((prev) => ({
@@ -43,41 +85,27 @@ export default function Curriculum() {
     }));
   }
 
-  function handleSelectPreset(curriculum: CurriculumDay[]) {
+  function handleSelectPreset(curriculum: Curriculum) {
     setCurriculum(curriculum);
+    setLastUpdate(new Date().getTime());
+  }
+
+  if (loading) {
+    return (
+      <div className="h-screen">
+        <Loader2 className="absolute top-1/2 left-1/2 z-10 size-8 -translate-1/2 animate-spin text-muted-foreground" />
+      </div>
+    );
   }
 
   return (
     <main className="min-h-screen bg-background px-2 py-6 sm:px-6 md:p-12">
       <div className="mx-auto max-w-7xl">
-        <header className="mb-4 flex flex-col items-center justify-center gap-2 sm:mb-8 sm:flex-row sm:justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-foreground xl:text-3xl">
-              Raspored
-            </h1>
-          </div>
-
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              className="max-sm:size-9"
-              onClick={() => setPresetDialogOpen(true)}
-            >
-              <TableIcon />
-              <span className="hidden sm:inline">Preset</span>
-            </Button>
-
-            <InfoDialog />
-
-            <ThemeToggle />
-          </div>
-        </header>
-
         <div className="rounded-lg border border-border bg-card">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-32 pl-4 font-semibold">Vreme</TableHead>
+                <TableHead className="w-32 pl-3 font-semibold">Vreme</TableHead>
                 <TableHead className="w-40 font-semibold max-sm:hidden">
                   Tip
                 </TableHead>
@@ -88,7 +116,7 @@ export default function Curriculum() {
             </TableHeader>
 
             <TableBody>
-              {curriculum.map((daySchedule, i) => {
+              {(curriculum ?? defaultCurriculum).map((daySchedule, i) => {
                 const dayName = days[i];
 
                 return (
@@ -113,10 +141,29 @@ export default function Curriculum() {
                             />
                           </Button>
 
-                          <p>{dayName}</p>
+                          <p
+                            className={cn(
+                              daySchedule.length === 0 &&
+                                "text-muted-foreground",
+                            )}
+                          >
+                            {dayName}
+                          </p>
                         </div>
                       </TableCell>
                     </TableRow>
+
+                    {!advancedOptions.collapsedDays.includes(dayName) &&
+                      daySchedule.length === 0 && (
+                        <TableRow className="w-full min-w-full">
+                          <TableCell
+                            colSpan={5}
+                            className="py-3 text-center text-sm text-muted-foreground italic"
+                          >
+                            Nema predavanja
+                          </TableCell>
+                        </TableRow>
+                      )}
 
                     {!advancedOptions.collapsedDays.includes(dayName) &&
                       daySchedule.map((classSession, index) => (
@@ -167,6 +214,21 @@ export default function Curriculum() {
               })}
             </TableBody>
           </Table>
+        </div>
+
+        <div className="mt-4 flex justify-end gap-2">
+          <Button
+            variant="outline"
+            className="max-sm:size-9"
+            onClick={() => setPresetDialogOpen(true)}
+          >
+            <TableIcon />
+            <span className="hidden sm:inline">Nov raspored</span>
+          </Button>
+
+          <InfoDialog />
+
+          <ThemeToggle />
         </div>
       </div>
 

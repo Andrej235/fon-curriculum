@@ -15,9 +15,10 @@ export default function InfoDialog() {
   return (
     <Dialog>
       <Button variant="outline" asChild className="max-sm:size-9">
-        <DialogTrigger>
-          <Info />
-          <span className="hidden sm:inline">Info</span>
+        <DialogTrigger asChild>
+          <Button variant="outline" size="icon">
+            <Info />
+          </Button>
         </DialogTrigger>
       </Button>
 
