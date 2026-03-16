@@ -4,15 +4,16 @@ import { CurriculumDay } from "@/lib/curriculum-day";
 import { days } from "@/lib/day";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
 import { Checkbox } from "./ui/checkbox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 import {
   Field,
   FieldGroup,
@@ -21,10 +22,6 @@ import {
   FieldSet,
 } from "./ui/field";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
-
-type PresetSelectorProps = {
-  onSelect: (curriculum: CurriculumDay[]) => void;
-};
 
 const groups = Array.from(
   new Set(days.flatMap((day) => curriculum[day].flatMap((c) => c.groups))),
@@ -41,7 +38,17 @@ const groupsByYear = yearNames.map((prefix) => ({
     .sort((x, y) => +x - +y),
 }));
 
-export function PresetSelector({ onSelect }: PresetSelectorProps) {
+type PresetSelectorProps = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onSelect: (curriculum: CurriculumDay[]) => void;
+};
+
+export function PresetSelectorDialog({
+  open,
+  setOpen,
+  onSelect,
+}: PresetSelectorProps) {
   const [selectedYear, setSelectedYear] = useState(0);
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
 
@@ -90,14 +97,18 @@ export function PresetSelector({ onSelect }: PresetSelectorProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Napravi raspored po svojoj grupi i predmetima</CardTitle>
-        <CardDescription>Ili nastavi sa praznim rasporedom</CardDescription>
-      </CardHeader>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            Napravi raspored po svojoj grupi i predmetima
+          </DialogTitle>
+          <DialogDescription>
+            Ili nastavi sa praznim rasporedom
+          </DialogDescription>
+        </DialogHeader>
 
-      <CardContent>
-        <FieldSet>
+        <FieldSet className="mb-4">
           <FieldLegend>Odaberi godinu i grupu</FieldLegend>
 
           <FieldGroup>
@@ -108,6 +119,7 @@ export function PresetSelector({ onSelect }: PresetSelectorProps) {
                 id="godina"
                 onValueChange={(value) => setSelectedYear(parseInt(value))}
                 value={selectedYear?.toString() ?? "0"}
+                variant="outline"
               >
                 {romanNumerals.map((name, i) => (
                   <ToggleGroupItem key={i} value={i.toString()}>
@@ -121,6 +133,9 @@ export function PresetSelector({ onSelect }: PresetSelectorProps) {
               <FieldLabel htmlFor="grupa">Grupa</FieldLabel>
               <ToggleGroup
                 type="single"
+                spacing={2}
+                variant={"outline"}
+                className="flex flex-wrap"
                 id="grupa"
                 onValueChange={(value) => setSelectedGroup(value)}
                 value={selectedGroup ?? "1"}
@@ -157,20 +172,24 @@ export function PresetSelector({ onSelect }: PresetSelectorProps) {
             ))}
           </FieldGroup>
         </FieldSet>
-      </CardContent>
 
-      <CardFooter className="justify-end gap-2">
-        <Button
-          onClick={() => onSelect([[], [], [], [], []])}
-          variant="outline"
-        >
-          Prazan raspored
-        </Button>
+        <DialogFooter className="justify-end gap-2">
+          <DialogClose asChild>
+            <Button
+              onClick={() => onSelect([[], [], [], [], []])}
+              variant="outline"
+            >
+              Prazan raspored
+            </Button>
+          </DialogClose>
 
-        <Button disabled={!selectedGroup} onClick={handleContinue}>
-          Napravi
-        </Button>
-      </CardFooter>
-    </Card>
+          <DialogClose asChild>
+            <Button disabled={!selectedGroup} onClick={handleContinue}>
+              Napravi
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
