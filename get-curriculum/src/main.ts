@@ -37,7 +37,7 @@ for (let i = 0; i < dayIndices.length; i++) {
 
   const regex =
     /(.+?)   (P|V)   ([A-D]\d+(?:,\s*[A-D]\d+)*) {1,3}(\d\d?:\d\d? {0,2}- {0,2}\d\d?:\d\d?) {1,3}(\d+|\p{L}+(?: \d)?)(?:(?<=\S) {1,2}(?=\S))/gu;
-  const matches = dayText
+  const rawDayClasses = dayText
     .matchAll(regex)
     .map(([, subject, type, groups, time, location]) => ({
       subject: subject.replace(/\s+/g, " ").trim(),
@@ -51,7 +51,39 @@ for (let i = 0; i < dayIndices.length; i++) {
     }))
     .toArray();
 
-  curriculum[dayName] = matches;
+
+  const mergedClasses = new Map<
+    string,
+    (typeof rawDayClasses)[number] & { locations: Set<string> }
+  >();
+
+  for (const classInfo of rawDayClasses) {
+    const key = [
+      classInfo.subject,
+      classInfo.type,
+      classInfo.groups.join(","),
+      classInfo.time,
+    ].join("|");
+
+    if (!mergedClasses.has(key)) {
+      mergedClasses.set(key, {
+        ...classInfo,
+        locations: new Set([classInfo.location]),
+      });
+      continue;
+    }
+
+    mergedClasses.get(key)?.locations.add(classInfo.location);
+  }
+
+  const dayClasses = [...mergedClasses.values()].map(
+    ({ locations, ...classInfo }) => ({
+      ...classInfo,
+      location: [...locations].join(" / "),
+    }),
+  );
+
+  curriculum[dayName] = dayClasses;
 }
 
 for (const day of days) {
