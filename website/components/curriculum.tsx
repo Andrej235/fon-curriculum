@@ -13,6 +13,7 @@ import {
   AdvancedOptions,
   defaultAdvancedOptions,
 } from "@/lib/advanced-options";
+import { CurriculumDay } from "@/lib/curriculum-day";
 import { defaultCurriculum, type Curriculum } from "@/lib/curriculum-type";
 import { Day, days } from "@/lib/day";
 import { formatClassType } from "@/lib/format-class-type";
@@ -21,21 +22,23 @@ import {
   curriculumLastUpdate,
   globalCurriculum,
 } from "@/lib/global-curriculum";
+import { timeTable } from "@/lib/time-table";
 import { cn } from "@/lib/utils";
 import {
   AlertTriangle,
+  ArrowUpDown,
   ChevronDown,
+  EllipsisVertical,
   Loader2,
   Plus,
   TableIcon,
+  Trash2,
 } from "lucide-react";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import InfoDialog from "./info-dialog";
 import ThemeToggle from "./theme-toggle";
-import { CurriculumDay } from "@/lib/curriculum-day";
-import { timeTable } from "@/lib/time-table";
 import {
   Dialog,
   DialogContent,
@@ -43,6 +46,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 export default function Curriculum() {
   const [loading, setLoading] = useState(true);
@@ -178,6 +187,23 @@ export default function Curriculum() {
     setPromptForAddingClassesData(null);
   }
 
+  function handleRemoveClass(day: Day, classSession: CurriculumDay[number]) {
+    setCurriculum((prev) => {
+      if (!prev) return prev;
+
+      return prev.map((daySchedule, i) => {
+        if (days[i] !== day) return daySchedule;
+
+        return daySchedule.filter(
+          (c) =>
+            c.subject !== classSession.subject ||
+            c.type !== classSession.type ||
+            c.location !== classSession.location,
+        );
+      });
+    });
+  }
+
   if (loading) {
     return (
       <div className="h-screen">
@@ -200,6 +226,8 @@ export default function Curriculum() {
                 <TableHead className="font-semibold">Predmet</TableHead>
                 <TableHead className="w-48 font-semibold">Grupe</TableHead>
                 <TableHead className="w-48 font-semibold">Lokacija</TableHead>
+                {/* for the actions button */}
+                <TableHead className="w-12" />
               </TableRow>
             </TableHeader>
 
@@ -220,7 +248,7 @@ export default function Curriculum() {
                       onClick={() => toggleCollapsed(dayName)}
                     >
                       <TableCell
-                        colSpan={5}
+                        colSpan={6}
                         className="font-semibold text-foreground"
                       >
                         <div className="flex items-center">
@@ -268,7 +296,7 @@ export default function Curriculum() {
                       addingClassesToDay !== dayName && (
                         <TableRow className="w-full min-w-full">
                           <TableCell
-                            colSpan={5}
+                            colSpan={6}
                             className="py-3 text-center text-sm text-muted-foreground italic"
                           >
                             Nema predavanja
@@ -355,6 +383,33 @@ export default function Curriculum() {
 
                             <TableCell className="text-sm text-muted-foreground">
                               {classSession.location}
+                            </TableCell>
+
+                            <TableCell className="w-max">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon">
+                                    <EllipsisVertical />
+                                  </Button>
+                                </DropdownMenuTrigger>
+
+                                <DropdownMenuContent>
+                                  <DropdownMenuItem>
+                                    <ArrowUpDown className="ml-2" />
+                                    <span>Zameni</span>
+                                  </DropdownMenuItem>
+
+                                  <DropdownMenuItem
+                                    variant="destructive"
+                                    onClick={() =>
+                                      handleRemoveClass(dayName, classSession)
+                                    }
+                                  >
+                                    <Trash2 className="ml-2" />
+                                    <span>Obriši</span>
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </TableCell>
                           </TableRow>
                         );
