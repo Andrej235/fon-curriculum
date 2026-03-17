@@ -36,7 +36,7 @@ for (let i = 0; i < dayIndices.length; i++) {
   dayText = dayText.slice(dayName.length).trim();
 
   const regex =
-    /(.+?)   ([P,V])   ([A-D]\d+(?:,\s*[A-D]\d+)*)   ?(\d\d?:\d\d? {0,2}- {0,2}\d\d?:\d\d?)   ?(.+?)(?:(?<=\S) {2}(?=\S))/g;
+    /(.+?)   (P|V)   ([A-D]\d+(?:,\s*[A-D]\d+)*) {1,3}(\d\d?:\d\d? {0,2}- {0,2}\d\d?:\d\d?) {1,3}(\d+|\p{L}+(?: \d)?)(?:(?<=\S) {1,2}(?=\S))/gu;
   const matches = dayText
     .matchAll(regex)
     .map(([, subject, type, groups, time, location]) => ({
@@ -46,7 +46,7 @@ for (let i = 0; i < dayIndices.length; i++) {
         .split(",")
         .map((g) => g.trim())
         .filter((g) => g.startsWith("A")),
-      time,
+      time: time.replace(/\s*-\s*/, "-").trim(),
       location,
     }))
     .toArray();
