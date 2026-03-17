@@ -25,9 +25,9 @@ import {
 import { timeTable } from "@/lib/time-table";
 import { cn } from "@/lib/utils";
 import {
-  AlertTriangle,
   ArrowUpDown,
   ChevronDown,
+  Copy,
   EllipsisVertical,
   Loader2,
   Plus,
@@ -153,35 +153,35 @@ export default function Curriculum() {
     setCurriculum((prev) => {
       if (!prev) return prev;
 
-      return prev.map((daySchedule, i) => {
-        if (days[i] !== day) return daySchedule;
+      const newCurriculum = [...prev];
 
-        const newDaySchedule = [...daySchedule];
-        const classIndex = newDaySchedule.findIndex((c) => c?.time === time);
+      const daySchedule = newCurriculum[days.indexOf(day)];
+      const newDaySchedule = [...daySchedule];
+      const classIndex = newDaySchedule.findIndex((c) => c?.time === time);
 
+      if (classIndex === -1) {
         // add
-        if (classIndex === -1) {
-          let closest = 0;
-          const timeIdx = timeTable.indexOf(time);
+        let closest = 0;
+        const timeIdx = timeTable.indexOf(time);
 
-          for (let i = 0; i < newDaySchedule.length; i++) {
-            if (timeTable.indexOf(newDaySchedule[i]!.time) > timeIdx) break;
+        for (let i = 0; i < newDaySchedule.length; i++) {
+          if (timeTable.indexOf(newDaySchedule[i]!.time) > timeIdx) break;
 
-            closest = i + 1;
-          }
-
-          return [
-            ...newDaySchedule.slice(0, closest),
-            classSession,
-            ...newDaySchedule.slice(closest),
-          ];
+          closest = i + 1;
         }
 
+        newCurriculum[days.indexOf(day)] = [
+          ...newDaySchedule.slice(0, closest),
+          classSession,
+          ...newDaySchedule.slice(closest),
+        ];
+      } else {
         // replace
-
         newDaySchedule[classIndex] = classSession;
-        return newDaySchedule;
-      });
+        newCurriculum[days.indexOf(day)] = newDaySchedule;
+      }
+
+      return newCurriculum;
     });
 
     setPromptForAddingClassesData(null);
@@ -394,7 +394,14 @@ export default function Curriculum() {
                                 </DropdownMenuTrigger>
 
                                 <DropdownMenuContent>
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      setPromptForAddingClassesData({
+                                        day: dayName,
+                                        time: classSession.time,
+                                      })
+                                    }
+                                  >
                                     <ArrowUpDown className="ml-2" />
                                     <span>Zameni</span>
                                   </DropdownMenuItem>
@@ -451,9 +458,19 @@ export default function Curriculum() {
           <DialogHeader>
             <DialogTitle>Dodaj predavanje</DialogTitle>
             <DialogDescription>
-              Izaberite predavanje koje želite da dodate u{" "}
-              {promptForAddingClassesData?.day},{" "}
-              {promptForAddingClassesData?.time}
+              <span>
+                Izaberite predavanje koje želite da dodate u{" "}
+                {promptForAddingClassesData?.day},{" "}
+                {promptForAddingClassesData?.time}
+              </span>
+
+              <br />
+
+              <span>
+                Predavanja oznacena znakom{" "}
+                <Copy className="mx-0.25 inline size-4 text-orange-400" /> vec
+                postoje u rasporedu
+              </span>
             </DialogDescription>
           </DialogHeader>
 
@@ -475,7 +492,7 @@ export default function Curriculum() {
                 >
                   <TableCell className="flex items-center gap-2">
                     {c.alreadyInCurriculum && (
-                      <AlertTriangle className="size-4 text-destructive" />
+                      <Copy className="size-4 text-orange-400" />
                     )}
                     {formatClassType(c.type)}
                   </TableCell>
