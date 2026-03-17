@@ -17,24 +17,36 @@ import { defaultCurriculum, type Curriculum } from "@/lib/curriculum-type";
 import { Day, days } from "@/lib/day";
 import { formatClassType } from "@/lib/format-class-type";
 import { formatGroupNames } from "@/lib/format-group-names";
-import { curriculumLastUpdate } from "@/lib/global-curriculum";
+import {
+  curriculumLastUpdate,
+  globalCurriculum,
+} from "@/lib/global-curriculum";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Loader2, Plus, TableIcon } from "lucide-react";
-import { Fragment, useEffect, useState } from "react";
+import {
+  AlertTriangle,
+  ChevronDown,
+  Loader2,
+  Plus,
+  TableIcon,
+} from "lucide-react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import InfoDialog from "./info-dialog";
 import ThemeToggle from "./theme-toggle";
 import { CurriculumDay } from "@/lib/curriculum-day";
 import { timeTable } from "@/lib/time-table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 export default function Curriculum() {
   const [loading, setLoading] = useState(true);
   const [presetDialogOpen, setPresetDialogOpen] = useState(false);
-
-  const [addingClassesToDay, setAddingClassesToDay] = useState<Day | null>(
-    null,
-  );
 
   const [curriculum, setCurriculum] = useLocalStorage<Curriculum | null>(
     "curriculum",
@@ -46,6 +58,36 @@ export default function Curriculum() {
   );
   const [advancedOptions, setAdvancedOptions] =
     useLocalStorage<AdvancedOptions>("advancedOptions", defaultAdvancedOptions);
+
+  const [addingClassesToDay, setAddingClassesToDay] = useState<Day | null>(
+    null,
+  );
+
+  const [promptForAddingClassesData, setPromptForAddingClassesData] = useState<{
+    day: Day;
+    time: string;
+  } | null>(null);
+  const availableClassesForAdding = useMemo(() => {
+    if (!promptForAddingClassesData) return [];
+
+    const { day, time } = promptForAddingClassesData;
+
+    const classesAtTime = globalCurriculum[day].filter(
+      (classSession) => classSession.time === time,
+    );
+
+    return classesAtTime.map((classSession) => ({
+      ...classSession,
+      alreadyInCurriculum:
+        curriculum?.some((daySchedule) =>
+          daySchedule.some(
+            (x) =>
+              x.subject === classSession.subject &&
+              x.type === classSession.type,
+          ),
+        ) ?? false,
+    }));
+  }, [promptForAddingClassesData, curriculum]);
 
   useEffect(() => {
     if (!curriculum && lastUpdateTimeMs) {
@@ -62,8 +104,6 @@ export default function Curriculum() {
     }
 
     if (curriculum && lastUpdateTimeMs) {
-      console.log(lastUpdateTimeMs);
-
       if (lastUpdateTimeMs < curriculumLastUpdate.getTime()) {
         toast.info(
           "Podaci o rasporedu su zastareli, molimo vas da ih ponovo kreirate.",
@@ -94,6 +134,48 @@ export default function Curriculum() {
   function handleSelectPreset(curriculum: Curriculum) {
     setCurriculum(curriculum);
     setLastUpdate(new Date().getTime());
+  }
+
+  function submitAddingClass(classSession: CurriculumDay[number]) {
+    if (!promptForAddingClassesData) return;
+
+    const { day, time } = promptForAddingClassesData;
+
+    setCurriculum((prev) => {
+      if (!prev) return prev;
+
+      return prev.map((daySchedule, i) => {
+        if (days[i] !== day) return daySchedule;
+
+        const newDaySchedule = [...daySchedule];
+        const classIndex = newDaySchedule.findIndex((c) => c?.time === time);
+
+        // add
+        if (classIndex === -1) {
+          let closest = 0;
+          const timeIdx = timeTable.indexOf(time);
+
+          for (let i = 0; i < newDaySchedule.length; i++) {
+            if (timeTable.indexOf(newDaySchedule[i]!.time) > timeIdx) break;
+
+            closest = i + 1;
+          }
+
+          return [
+            ...newDaySchedule.slice(0, closest),
+            classSession,
+            ...newDaySchedule.slice(closest),
+          ];
+        }
+
+        // replace
+
+        newDaySchedule[classIndex] = classSession;
+        return newDaySchedule;
+      });
+    });
+
+    setPromptForAddingClassesData(null);
   }
 
   if (loading) {
@@ -211,9 +293,19 @@ export default function Curriculum() {
 
                               <TableCell colSpan={4} />
 
-                              <button className="absolute inset-0 grid place-items-center">
-                                <Plus className="size-4" />
-                              </button>
+                              <td className="absolute inset-0">
+                                <button
+                                  className="absolute inset-0 grid place-items-center"
+                                  onClick={() =>
+                                    setPromptForAddingClassesData({
+                                      day: dayName,
+                                      time: timeTable[index],
+                                    })
+                                  }
+                                >
+                                  <Plus className="size-4" />
+                                </button>
+                              </td>
                             </TableRow>
                           );
                         }
@@ -295,6 +387,52 @@ export default function Curriculum() {
         setOpen={setPresetDialogOpen}
         onSelect={handleSelectPreset}
       />
+
+      <Dialog
+        open={!!promptForAddingClassesData}
+        onOpenChange={() => setPromptForAddingClassesData(null)}
+      >
+        <DialogContent className="md:min-w-max">
+          <DialogHeader>
+            <DialogTitle>Dodaj predavanje</DialogTitle>
+            <DialogDescription>
+              Izaberite predavanje koje želite da dodate u{" "}
+              {promptForAddingClassesData?.day},{" "}
+              {promptForAddingClassesData?.time}
+            </DialogDescription>
+          </DialogHeader>
+
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-32 pl-3 font-semibold">Tip</TableHead>
+                <TableHead className="font-semibold">Predmet</TableHead>
+                <TableHead className="w-40 font-semibold">Grupe</TableHead>
+                <TableHead className="w-40 font-semibold">Lokacija</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {availableClassesForAdding.map((c) => (
+                <TableRow
+                  key={`${c.subject}-${c.type}-${c.location}`}
+                  onClick={() => submitAddingClass(c)}
+                >
+                  <TableCell className="flex items-center gap-2">
+                    {c.alreadyInCurriculum && (
+                      <AlertTriangle className="size-4 text-destructive" />
+                    )}
+                    {formatClassType(c.type)}
+                  </TableCell>
+                  <TableCell>{c.subject}</TableCell>
+                  <TableCell>{formatGroupNames(c.groups)}</TableCell>
+                  <TableCell>{c.location}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
