@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="select-none">
       <body className={`${roboto.variable} ${robotoSlab.variable} antialiased`}>
         <ThemeProvider
           attribute="class"

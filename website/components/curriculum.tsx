@@ -43,6 +43,8 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
   ContextMenuTrigger,
 } from "./ui/context-menu";
 import {
@@ -288,6 +290,13 @@ export default function Curriculum() {
                               size="icon"
                               onClick={(e) => {
                                 e.stopPropagation();
+                                if (
+                                  advancedOptions.collapsedDays.includes(
+                                    dayName,
+                                  )
+                                )
+                                  toggleCollapsed(dayName);
+
                                 setAddingClassesToDay(
                                   addingClassesToDay === dayName
                                     ? null
@@ -295,6 +304,7 @@ export default function Curriculum() {
                                 );
                               }}
                               className="size-6 sm:size-9"
+                              disabled={daySchedule.length >= timeTable.length}
                             >
                               <Plus />
                             </Button>
@@ -375,7 +385,7 @@ export default function Curriculum() {
                                     addingClassesToDay !== dayName &&
                                     "opacity-50",
                                 )}
-                                onDoubleClick={(e) => {
+                                onClick={(e) => {
                                   const target = e.target as HTMLElement;
 
                                   const newEvent = new Event("contextmenu", {
@@ -472,7 +482,31 @@ export default function Curriculum() {
                               </TableRow>
                             </ContextMenuTrigger>
 
-                            <ContextMenuContent>
+                            <ContextMenuContent className="max-w-[60vw]">
+                              <ContextMenuLabel className="sm:hidden">
+                                {classSession.subject}&nbsp;-{" "}
+                                {formatClassType(classSession.type)}
+                              </ContextMenuLabel>
+
+                              <ContextMenuLabel className="pt-0 font-normal text-muted-foreground sm:hidden">
+                                <ul className="list-inside list-disc">
+                                  <li>{classSession.time}</li>
+
+                                  <li>
+                                    {formatGroupNames(classSession.groups)}
+                                  </li>
+
+                                  <li>
+                                    {!isNaN(+classSession.location) && (
+                                      <span>Sala </span>
+                                    )}
+                                    <span>{classSession.location}</span>
+                                  </li>
+                                </ul>
+                              </ContextMenuLabel>
+
+                              <ContextMenuSeparator className="sm:hidden" />
+
                               <ContextMenuItem
                                 onClick={() =>
                                   setPromptForAddingClassesData({
