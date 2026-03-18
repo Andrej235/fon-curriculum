@@ -40,6 +40,12 @@ import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
 import ThemeToggle from "./theme-toggle";
 import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "./ui/context-menu";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -350,86 +356,132 @@ export default function Curriculum() {
                         }
 
                         return (
-                          <TableRow
-                            key={`${dayName}-${index}`}
-                            className={cn(
-                              "hover:bg-muted/30",
-                              addingClassesToDay &&
-                                addingClassesToDay !== dayName &&
-                                "opacity-50",
-                            )}
-                          >
-                            <TableCell className="font-mono text-sm text-muted-foreground">
-                              {classSession.time}
-                            </TableCell>
+                          <ContextMenu key={`${dayName}-${index}`}>
+                            <ContextMenuTrigger asChild>
+                              <TableRow
+                                className={cn(
+                                  "select-none hover:bg-muted/30",
+                                  addingClassesToDay &&
+                                    addingClassesToDay !== dayName &&
+                                    "opacity-50",
+                                )}
+                                onDoubleClick={(e) => {
+                                  const target = e.target as HTMLElement;
 
-                            <TableCell className="max-sm:hidden">
-                              <span className="text-muted-foreground">
-                                {formatClassType(classSession.type)}
-                              </span>
-                            </TableCell>
+                                  const newEvent = new Event("contextmenu", {
+                                    bubbles: true,
+                                  }) as Event & {
+                                    clientX: number;
+                                    clientY: number;
+                                  };
 
-                            <TableCell className="font-medium text-foreground">
-                              <span className="max-sm:hidden">
-                                {classSession.subject}
-                              </span>
-                              <span className="sm:hidden">
-                                {classSession.subject.length > 30
-                                  ? `${classSession.subject
-                                      .split(" ")
-                                      .map((x) =>
-                                        x.length > 1 ? x[0].toUpperCase() : x,
-                                      )
-                                      .join("")}`
-                                  : classSession.subject}
-                              </span>{" "}
-                              <span className="sm:hidden">
-                                ({classSession.type})
-                              </span>
-                            </TableCell>
+                                  newEvent.clientX = e.clientX;
+                                  newEvent.clientY = e.clientY;
+                                  target.dispatchEvent(newEvent);
+                                }}
+                              >
+                                <TableCell className="font-mono text-sm text-muted-foreground">
+                                  {classSession.time}
+                                </TableCell>
 
-                            <TableCell className="text-sm text-muted-foreground">
-                              {formatGroupNames(classSession.groups)}
-                            </TableCell>
+                                <TableCell className="max-sm:hidden">
+                                  <span className="text-muted-foreground">
+                                    {formatClassType(classSession.type)}
+                                  </span>
+                                </TableCell>
 
-                            <TableCell className="text-sm text-muted-foreground">
-                              {classSession.location}
-                            </TableCell>
+                                <TableCell className="font-medium text-foreground">
+                                  <span className="max-sm:hidden">
+                                    {classSession.subject}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {classSession.subject.length > 30
+                                      ? `${classSession.subject
+                                          .split(" ")
+                                          .map((x) =>
+                                            x.length > 1
+                                              ? x[0].toUpperCase()
+                                              : x,
+                                          )
+                                          .join("")}`
+                                      : classSession.subject}
+                                  </span>{" "}
+                                  <span className="sm:hidden">
+                                    ({classSession.type})
+                                  </span>
+                                </TableCell>
 
-                            <TableCell className="w-max">
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon-sm">
-                                    <EllipsisVertical />
-                                  </Button>
-                                </DropdownMenuTrigger>
+                                <TableCell className="text-sm text-muted-foreground">
+                                  {formatGroupNames(classSession.groups)}
+                                </TableCell>
 
-                                <DropdownMenuContent>
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      setPromptForAddingClassesData({
-                                        day: dayName,
-                                        time: classSession.time,
-                                      })
-                                    }
-                                  >
-                                    <ArrowUpDown className="ml-2" />
-                                    <span>Zameni</span>
-                                  </DropdownMenuItem>
+                                <TableCell className="text-sm text-muted-foreground">
+                                  {classSession.location}
+                                </TableCell>
 
-                                  <DropdownMenuItem
-                                    variant="destructive"
-                                    onClick={() =>
-                                      handleRemoveClass(dayName, classSession)
-                                    }
-                                  >
-                                    <Trash2 className="ml-2" />
-                                    <span>Obriši</span>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
+                                <TableCell className="w-max">
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button variant="ghost" size="icon-sm">
+                                        <EllipsisVertical />
+                                      </Button>
+                                    </DropdownMenuTrigger>
+
+                                    <DropdownMenuContent>
+                                      <DropdownMenuItem
+                                        onClick={() =>
+                                          setPromptForAddingClassesData({
+                                            day: dayName,
+                                            time: classSession.time,
+                                          })
+                                        }
+                                      >
+                                        <ArrowUpDown className="ml-2" />
+                                        <span>Zameni</span>
+                                      </DropdownMenuItem>
+
+                                      <DropdownMenuItem
+                                        variant="destructive"
+                                        onClick={() =>
+                                          handleRemoveClass(
+                                            dayName,
+                                            classSession,
+                                          )
+                                        }
+                                      >
+                                        <Trash2 className="ml-2" />
+                                        <span>Obriši</span>
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </TableCell>
+                              </TableRow>
+                            </ContextMenuTrigger>
+
+                            <ContextMenuContent>
+                              <ContextMenuItem
+                                onClick={() =>
+                                  setPromptForAddingClassesData({
+                                    day: dayName,
+                                    time: classSession.time,
+                                  })
+                                }
+                              >
+                                <ArrowUpDown className="ml-2" />
+                                <span>Zameni</span>
+                              </ContextMenuItem>
+
+                              <ContextMenuItem
+                                variant="destructive"
+                                onClick={() =>
+                                  handleRemoveClass(dayName, classSession)
+                                }
+                              >
+                                <Trash2 className="ml-2" />
+                                <span>Obriši</span>
+                              </ContextMenuItem>
+                            </ContextMenuContent>
+                          </ContextMenu>
                         );
                       })}
                   </Fragment>
@@ -440,13 +492,9 @@ export default function Curriculum() {
         </div>
 
         <div className="mt-4 flex justify-end gap-2">
-          <Button
-            variant="outline"
-            className="max-sm:size-9"
-            onClick={() => setPresetDialogOpen(true)}
-          >
+          <Button variant="outline" onClick={() => setPresetDialogOpen(true)}>
             <TableIcon />
-            <span className="hidden sm:inline">Nov raspored</span>
+            <span>Nov raspored</span>
           </Button>
 
           <Button variant="outline" size="icon" asChild>
