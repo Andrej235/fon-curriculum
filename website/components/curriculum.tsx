@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Settings, defaultSettings } from "@/lib/advanced-options";
+import { Settings, defaultSettings } from "@/lib/settings";
 import { CurriculumDay } from "@/lib/curriculum-day";
 import { defaultCurriculum, type Curriculum } from "@/lib/curriculum-type";
 import { Day, days } from "@/lib/day";
@@ -409,9 +409,22 @@ export default function Curriculum() {
                                   <span className="max-sm:hidden">
                                     {classSession.subject}
                                   </span>
-                                  <div className="grid max-w-max grid-cols-[minmax(0,1fr)_auto] items-center sm:hidden">
-                                    <span className="inline-block max-w-max truncate">
-                                      {classSession.subject.length > 25
+                                  <div
+                                    className={cn(
+                                      "grid max-w-max grid-cols-[minmax(0,1fr)_auto] items-center sm:hidden",
+                                      !settings.truncateLongNames &&
+                                        "min-w-max",
+                                    )}
+                                  >
+                                    <span
+                                      className={cn(
+                                        "inline-block max-w-max",
+                                        settings.truncateLongNames &&
+                                          "truncate",
+                                      )}
+                                    >
+                                      {classSession.subject.length >
+                                      settings.turnLongNamesIntoInitialsAfter
                                         ? `${classSession.subject
                                             .split(" ")
                                             .map((x) =>
