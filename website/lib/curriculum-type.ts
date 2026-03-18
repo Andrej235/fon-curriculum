@@ -1,10 +1,5 @@
 import { CurriculumDay } from "./curriculum-day";
 
-export type Curriculum = {
-  [Key in string]: CurriculumDay;
-};
+export type Curriculum = CurriculumDay[];
 
-export type UnwrappedCurriculum = {
-  day: string;
-  classes: CurriculumDay;
-}[];
+export const defaultCurriculum: Curriculum = [[], [], [], [], []];
