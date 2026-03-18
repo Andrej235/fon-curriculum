@@ -29,6 +29,7 @@ import {
   ChevronDown,
   Copy,
   EllipsisVertical,
+  Github,
   Loader2,
   Plus,
   TableIcon,
@@ -37,7 +38,6 @@ import {
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
-import InfoDialog from "./info-dialog";
 import ThemeToggle from "./theme-toggle";
 import {
   Dialog,
@@ -438,7 +438,15 @@ export default function Curriculum() {
             <span className="hidden sm:inline">Nov raspored</span>
           </Button>
 
-          <InfoDialog />
+          <Button variant="outline" size="icon" asChild>
+            <a
+              href="https://github.com/Andrej235/fon-curriculum"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Github />
+            </a>
+          </Button>
 
           <ThemeToggle />
         </div>
