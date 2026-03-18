@@ -9,10 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  AdvancedOptions,
-  defaultAdvancedOptions,
-} from "@/lib/advanced-options";
+import { Settings, defaultSettings } from "@/lib/advanced-options";
 import { CurriculumDay } from "@/lib/curriculum-day";
 import { defaultCurriculum, type Curriculum } from "@/lib/curriculum-type";
 import { Day, days } from "@/lib/day";
@@ -29,7 +26,6 @@ import {
   ChevronDown,
   Copy,
   EllipsisVertical,
-  Github,
   Loader2,
   Plus,
   TableIcon,
@@ -38,7 +34,7 @@ import {
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useLocalStorage } from "usehooks-ts";
-import ThemeToggle from "./theme-toggle";
+import { SettingsMenu } from "./settings-menu";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -60,6 +56,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Separator } from "./ui/separator";
 
 export default function Curriculum() {
   const [loading, setLoading] = useState(true);
@@ -73,8 +70,10 @@ export default function Curriculum() {
     "curriculum-last-update",
     null,
   );
-  const [advancedOptions, setAdvancedOptions] =
-    useLocalStorage<AdvancedOptions>("advancedOptions", defaultAdvancedOptions);
+  const [settings, setSettings] = useLocalStorage<Settings>(
+    "settings",
+    defaultSettings,
+  );
 
   const [addingClassesToDay, setAddingClassesToDay] = useState<Day | null>(
     null,
@@ -140,7 +139,7 @@ export default function Curriculum() {
   }, [curriculum]);
 
   function toggleCollapsed(day: string) {
-    setAdvancedOptions((prev) => ({
+    setSettings((prev) => ({
       ...prev,
       collapsedDays: !prev.collapsedDays.includes(day)
         ? [...prev.collapsedDays, day]
@@ -223,7 +222,7 @@ export default function Curriculum() {
   }
 
   return (
-    <main className="min-h-screen bg-background sm:px-6 sm:py-6 md:p-12">
+    <main className="min-h-screen bg-background pb-6 sm:px-6 sm:py-6 md:p-12">
       <div className="mx-auto max-w-7xl">
         <div className="bg-card sm:rounded-lg sm:border sm:border-border">
           <Table className="select-none">
@@ -268,7 +267,7 @@ export default function Curriculum() {
                           >
                             <ChevronDown
                               className={
-                                advancedOptions.collapsedDays.includes(dayName)
+                                settings.collapsedDays.includes(dayName)
                                   ? "rotate-180"
                                   : ""
                               }
@@ -290,11 +289,7 @@ export default function Curriculum() {
                               size="icon"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                if (
-                                  advancedOptions.collapsedDays.includes(
-                                    dayName,
-                                  )
-                                )
+                                if (settings.collapsedDays.includes(dayName))
                                   toggleCollapsed(dayName);
 
                                 setAddingClassesToDay(
@@ -314,7 +309,7 @@ export default function Curriculum() {
                     </TableRow>
 
                     {/* empty */}
-                    {!advancedOptions.collapsedDays.includes(dayName) &&
+                    {!settings.collapsedDays.includes(dayName) &&
                       daySchedule.length === 0 &&
                       addingClassesToDay !== dayName && (
                         <TableRow className="w-full min-w-full">
@@ -328,7 +323,7 @@ export default function Curriculum() {
                       )}
 
                     {/* classes and placeholders */}
-                    {!advancedOptions.collapsedDays.includes(dayName) &&
+                    {!settings.collapsedDays.includes(dayName) &&
                       (addingClassesToDay === dayName
                         ? addPaddingClasses(daySchedule)
                         : daySchedule
@@ -539,23 +534,15 @@ export default function Curriculum() {
           </Table>
         </div>
 
-        <div className="mt-4 flex justify-end gap-2">
+        <Separator />
+
+        <div className="mt-4 flex items-center justify-center gap-2 sm:justify-end">
           <Button variant="outline" onClick={() => setPresetDialogOpen(true)}>
             <TableIcon />
             <span>Nov raspored</span>
           </Button>
 
-          <Button variant="outline" size="icon" asChild>
-            <a
-              href="https://github.com/Andrej235/fon-curriculum"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Github />
-            </a>
-          </Button>
-
-          <ThemeToggle />
+          <SettingsMenu settings={settings} setSettings={setSettings} />
         </div>
       </div>
 

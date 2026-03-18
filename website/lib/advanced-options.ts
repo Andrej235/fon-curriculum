@@ -1,7 +1,7 @@
-export type AdvancedOptions = {
+export type Settings = {
   collapsedDays: string[];
 };
 
-export const defaultAdvancedOptions: AdvancedOptions = {
+export const defaultSettings: Settings = {
   collapsedDays: [],
 };
