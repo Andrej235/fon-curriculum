@@ -204,7 +204,9 @@ export default function Curriculum() {
           (c) =>
             c.subject !== classSession.subject ||
             c.type !== classSession.type ||
-            c.location !== classSession.location,
+            c.location !== classSession.location ||
+            c.time !== classSession.time ||
+            c.groups.join(",") !== classSession.groups.join(","),
         );
       });
     });
@@ -219,16 +221,14 @@ export default function Curriculum() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-2 py-6 sm:px-6 md:p-12">
+    <main className="min-h-screen bg-background sm:px-6 sm:py-6 md:p-12">
       <div className="mx-auto max-w-7xl">
-        <div className="rounded-lg border border-border bg-card">
-          <Table>
-            <TableHeader>
+        <div className="bg-card sm:rounded-lg sm:border sm:border-border">
+          <Table className="select-none">
+            <TableHeader className="max-sm:hidden">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-32 pl-3 font-semibold">Vreme</TableHead>
-                <TableHead className="w-40 font-semibold max-sm:hidden">
-                  Tip
-                </TableHead>
+                <TableHead className="w-40 font-semibold">Tip</TableHead>
                 <TableHead className="font-semibold">Predmet</TableHead>
                 <TableHead className="w-48 font-semibold">Grupe</TableHead>
                 <TableHead className="w-48 font-semibold">Lokacija</TableHead>
@@ -243,6 +243,7 @@ export default function Curriculum() {
 
                 return (
                   <Fragment key={dayName}>
+                    {/* day name headers */}
                     <TableRow
                       key={dayName}
                       className={cn(
@@ -254,11 +255,15 @@ export default function Curriculum() {
                       onClick={() => toggleCollapsed(dayName)}
                     >
                       <TableCell
-                        colSpan={6}
                         className="font-semibold text-foreground"
+                        colSpan={6}
                       >
                         <div className="flex items-center">
-                          <Button size="icon" variant="ghost">
+                          <Button
+                            size="icon"
+                            variant="invisible"
+                            className="mr-2 ml-1 size-max"
+                          >
                             <ChevronDown
                               className={
                                 advancedOptions.collapsedDays.includes(dayName)
@@ -289,6 +294,7 @@ export default function Curriculum() {
                                     : dayName,
                                 );
                               }}
+                              className="size-6 sm:size-9"
                             >
                               <Plus />
                             </Button>
@@ -297,6 +303,7 @@ export default function Curriculum() {
                       </TableCell>
                     </TableRow>
 
+                    {/* empty */}
                     {!advancedOptions.collapsedDays.includes(dayName) &&
                       daySchedule.length === 0 &&
                       addingClassesToDay !== dayName && (
@@ -310,11 +317,13 @@ export default function Curriculum() {
                         </TableRow>
                       )}
 
+                    {/* classes and placeholders */}
                     {!advancedOptions.collapsedDays.includes(dayName) &&
                       (addingClassesToDay === dayName
                         ? addPaddingClasses(daySchedule)
                         : daySchedule
                       ).map((classSession, index) => {
+                        // plus
                         if (!classSession) {
                           return (
                             <TableRow
@@ -322,7 +331,7 @@ export default function Curriculum() {
                               className="relative hover:bg-muted/30"
                             >
                               <TableCell className="font-mono text-sm text-muted-foreground">
-                                {timeTable[index]}
+                                <ClassTime time={timeTable[index]} />
                               </TableCell>
 
                               <TableCell colSpan={4}>
@@ -332,7 +341,7 @@ export default function Curriculum() {
                                   size="icon-sm"
                                   tabIndex={-1}
                                   aria-hidden
-                                  className="opacity-0"
+                                  className="size-6 opacity-0 sm:size-8"
                                 >
                                   <Plus />
                                 </Button>
@@ -355,12 +364,13 @@ export default function Curriculum() {
                           );
                         }
 
+                        // actual class session
                         return (
                           <ContextMenu key={`${dayName}-${index}`}>
                             <ContextMenuTrigger asChild>
                               <TableRow
                                 className={cn(
-                                  "select-none hover:bg-muted/30",
+                                  "hover:bg-muted/30",
                                   addingClassesToDay &&
                                     addingClassesToDay !== dayName &&
                                     "opacity-50",
@@ -381,7 +391,7 @@ export default function Curriculum() {
                                 }}
                               >
                                 <TableCell className="font-mono text-sm text-muted-foreground">
-                                  {classSession.time}
+                                  <ClassTime time={classSession.time} />
                                 </TableCell>
 
                                 <TableCell className="max-sm:hidden">
@@ -394,24 +404,24 @@ export default function Curriculum() {
                                   <span className="max-sm:hidden">
                                     {classSession.subject}
                                   </span>
-                                  <span className="sm:hidden">
-                                    {classSession.subject.length > 30
-                                      ? `${classSession.subject
-                                          .split(" ")
-                                          .map((x) =>
-                                            x.length > 1
-                                              ? x[0].toUpperCase()
-                                              : x,
-                                          )
-                                          .join("")}`
-                                      : classSession.subject}
-                                  </span>{" "}
-                                  <span className="sm:hidden">
-                                    ({classSession.type})
-                                  </span>
+                                  <div className="grid max-w-max grid-cols-[minmax(0,1fr)_auto] items-center sm:hidden">
+                                    <span className="inline-block max-w-max truncate">
+                                      {classSession.subject.length > 25
+                                        ? `${classSession.subject
+                                            .split(" ")
+                                            .map((x) =>
+                                              x.length > 1
+                                                ? x[0].toUpperCase()
+                                                : "",
+                                            )
+                                            .join("")}`
+                                        : classSession.subject}
+                                    </span>{" "}
+                                    <span>&nbsp;({classSession.type})</span>
+                                  </div>
                                 </TableCell>
 
-                                <TableCell className="text-sm text-muted-foreground">
+                                <TableCell className="text-sm text-muted-foreground max-sm:hidden">
                                   {formatGroupNames(classSession.groups)}
                                 </TableCell>
 
@@ -422,7 +432,11 @@ export default function Curriculum() {
                                 <TableCell className="w-max">
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                      <Button variant="ghost" size="icon-sm">
+                                      <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        className="size-6 sm:size-8"
+                                      >
                                         <EllipsisVertical />
                                       </Button>
                                     </DropdownMenuTrigger>
@@ -589,4 +603,19 @@ function addPaddingClasses(
   });
 
   return paddedSchedule;
+}
+
+function ClassTime({ time }: { time: string }) {
+  const [start, end] = useMemo(() => {
+    const split = time.split("-");
+    if (split.length !== 2) return [split[0], split.slice(1).join("-")];
+    return [split[0], split[1]];
+  }, [time]);
+
+  return (
+    <>
+      <span>{start}</span>
+      <span className="hidden sm:inline">-{end}</span>
+    </>
+  );
 }
