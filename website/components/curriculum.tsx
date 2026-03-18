@@ -319,7 +319,18 @@ export default function Curriculum() {
                                 {timeTable[index]}
                               </TableCell>
 
-                              <TableCell colSpan={4} />
+                              <TableCell colSpan={4}>
+                                {/* this button is there just for the layout, it server no practical purpose */}
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  tabIndex={-1}
+                                  aria-hidden
+                                  className="opacity-0"
+                                >
+                                  <Plus />
+                                </Button>
+                              </TableCell>
 
                               <td className="absolute inset-0">
                                 <button
@@ -388,7 +399,7 @@ export default function Curriculum() {
                             <TableCell className="w-max">
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon">
+                                  <Button variant="ghost" size="icon-sm">
                                     <EllipsisVertical />
                                   </Button>
                                 </DropdownMenuTrigger>
