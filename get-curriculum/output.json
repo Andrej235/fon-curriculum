@@ -8,7 +8,7 @@
       "location": "Čitaonica"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "P",
       "groups": ["A5", "A6", "A7"],
       "time": "08:15-10:00",
@@ -227,14 +227,14 @@
       "location": "20"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A7"],
       "time": "10:15-12:00",
       "location": "30"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A6"],
       "time": "10:15-12:00",
@@ -276,7 +276,7 @@
       "location": "17"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A5"],
       "time": "10:15-12:00",
@@ -360,35 +360,35 @@
       "location": "17"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "P",
       "groups": ["A1", "A2", "A3", "A4"],
       "time": "16:15-18:00",
       "location": "Amfiteatar 4"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A4"],
       "time": "18:15-20:00",
       "location": "Amfiteatar 5"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A3"],
       "time": "18:15-20:00",
       "location": "Amfiteatar 3"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A1", "A2"],
       "time": "18:15-20:00",
       "location": "Amfiteatar 4"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "P",
       "groups": ["A8", "A9", "A10"],
       "time": "18:15-20:00",
@@ -524,7 +524,7 @@
       "location": "30"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A8"],
       "time": "14:15-16:00",
@@ -538,14 +538,14 @@
       "location": "11 / 62"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A9"],
       "time": "14:15-16:00",
       "location": "15"
     },
     {
-      "subject": "Inženjering procesa (NA)",
+      "subject": "Inženjering procesa",
       "type": "V",
       "groups": ["A10"],
       "time": "14:15-16:00",
@@ -757,7 +757,7 @@
       "location": "Čitaonica"
     },
     {
-      "subject": "Menadžment tehnologije i razvoja (NA)",
+      "subject": "Menadžment tehnologije i razvoja",
       "type": "P",
       "groups": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
       "time": "14:15-16:00",
@@ -771,7 +771,7 @@
       "location": "Amfiteatar 1"
     },
     {
-      "subject": "Menadžment tehnologije i razvoja (NA)",
+      "subject": "Menadžment tehnologije i razvoja",
       "type": "V",
       "groups": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
       "time": "16:15-18:00",

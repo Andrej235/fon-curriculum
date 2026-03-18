@@ -40,7 +40,10 @@ for (let i = 0; i < dayIndices.length; i++) {
   const rawDayClasses = dayText
     .matchAll(regex)
     .map(([, subject, type, groups, time, location]) => ({
-      subject: subject.replace(/\s+/g, " ").trim(),
+      subject: subject
+        .replace(/\(.+\)/g, "")
+        .replace(/\s+/g, " ")
+        .trim(),
       type,
       groups: groups
         .split(",")
@@ -50,7 +53,6 @@ for (let i = 0; i < dayIndices.length; i++) {
       location,
     }))
     .toArray();
-
 
   const mergedClasses = new Map<
     string,
