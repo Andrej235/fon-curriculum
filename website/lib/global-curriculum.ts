@@ -1,7 +1,7 @@
 import { CurriculumDay } from "./curriculum-day";
 import { Day } from "./day";
 
-export const curriculumLastUpdate = new Date("2025-03-22");
+export const curriculumLastUpdate = new Date("2026-03-22");
 
 type GlobalCurriculum = {
   [Key in Day]: CurriculumDay;
