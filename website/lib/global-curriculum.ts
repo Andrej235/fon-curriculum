@@ -1,7 +1,7 @@
 import { CurriculumDay } from "./curriculum-day";
 import { Day } from "./day";
 
-export const curriculumLastUpdate = new Date("2025-03-15");
+export const curriculumLastUpdate = new Date("2025-03-22");
 
 type GlobalCurriculum = {
   [Key in Day]: CurriculumDay;
@@ -10,13 +10,6 @@ type GlobalCurriculum = {
 export const globalCurriculum: GlobalCurriculum = {
   Ponedeljak: [
     {
-      subject: "Psihologija",
-      type: "V",
-      groups: ["A15", "A16"],
-      time: "08:15-10:00",
-      location: "Čitaonica",
-    },
-    {
       subject: "Inženjering procesa",
       type: "P",
       groups: ["A5", "A6", "A7"],
@@ -24,10 +17,24 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 4",
     },
     {
+      subject: "Psihologija",
+      type: "V",
+      groups: ["A15", "A16"],
+      time: "08:15-10:00",
+      location: "Amfiteatar 5",
+    },
+    {
       subject: "Sociologija",
       type: "V",
       groups: ["A11", "A12", "A13"],
       time: "08:15-10:00",
+      location: "Amfiteatar 3",
+    },
+    {
+      subject: "Engleski jezik u menadžmentu 1",
+      type: "P",
+      groups: ["A15", "A16", "A17", "A18"],
+      time: "10:15-12:00",
       location: "Amfiteatar 3",
     },
     {
@@ -52,45 +59,22 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "14",
     },
     {
-      subject: "Engleski jezik u menadžmentu 1",
-      type: "P",
-      groups: ["A15", "A16", "A17", "A18"],
-      time: "10:15-12:00",
-      location: "Amfiteatar 3",
-    },
-    {
       subject: "Sociologija",
       type: "V",
-      groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
+      groups: [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "A14",
+      ],
       time: "10:15-12:00",
-      location: "Čitaonica",
-    },
-    {
-      subject: "Sociologija",
-      type: "V",
-      groups: ["A14"],
-      time: "10:15-12:00",
-      location: "21",
-    },
-    {
-      subject: "Matematika 2",
-      type: "V",
-      groups: ["A2"],
-      time: "12:15-14:00",
-      location: "13",
-    },
-    {
-      subject: "Matematika 2",
-      type: "V",
-      groups: ["A1"],
-      time: "12:15-14:00",
-      location: "15",
-    },
-    {
-      subject: "Psihologija",
-      type: "V",
-      groups: ["A13", "A14"],
-      time: "12:15-14:00",
       location: "Čitaonica",
     },
     {
@@ -101,11 +85,32 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "21",
     },
     {
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A2"],
+      time: "12:15-14:00",
+      location: "13",
+    },
+    {
+      subject: "Engleski jezik u menadžmentu 1",
+      type: "V",
+      groups: ["A16"],
+      time: "12:15-14:00",
+      location: "17",
+    },
+    {
       subject: "Psihologija",
       type: "V",
-      groups: ["A3", "A4", "A10"],
+      groups: ["A13", "A14"],
       time: "12:15-14:00",
-      location: "Amfiteatar 3",
+      location: "Čitaonica",
+    },
+    {
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A1"],
+      time: "12:15-14:00",
+      location: "15",
     },
     {
       subject: "Engleski jezik u menadžmentu 1",
@@ -122,11 +127,18 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 1",
     },
     {
-      subject: "Engleski jezik u menadžmentu 1",
+      subject: "Psihologija",
       type: "V",
-      groups: ["A16"],
+      groups: ["A3", "A4", "A10"],
       time: "12:15-14:00",
-      location: "17",
+      location: "Amfiteatar 3",
+    },
+    {
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A6"],
+      time: "14:15-16:00",
+      location: "15",
     },
     {
       subject: "Sociologija",
@@ -136,11 +148,25 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "17",
     },
     {
+      subject: "Sociologija",
+      type: "P",
+      groups: ["A11", "A12", "A13", "A14"],
+      time: "14:15-16:00",
+      location: "Amfiteatar 3",
+    },
+    {
       subject: "Matematika 2",
       type: "V",
       groups: ["A7"],
       time: "14:15-16:00",
       location: "13",
+    },
+    {
+      subject: "Psihologija",
+      type: "P",
+      groups: ["A8", "A9", "A10"],
+      time: "14:15-16:00",
+      location: "Amfiteatar 1",
     },
     {
       subject: "Matematika 2",
@@ -152,23 +178,9 @@ export const globalCurriculum: GlobalCurriculum = {
     {
       subject: "Matematika 2",
       type: "V",
-      groups: ["A6"],
-      time: "14:15-16:00",
+      groups: ["A8"],
+      time: "16:15-18:00",
       location: "15",
-    },
-    {
-      subject: "Psihologija",
-      type: "P",
-      groups: ["A8", "A9", "A10"],
-      time: "14:15-16:00",
-      location: "Amfiteatar 1",
-    },
-    {
-      subject: "Sociologija",
-      type: "P",
-      groups: ["A11", "A12", "A13", "A14"],
-      time: "14:15-16:00",
-      location: "Amfiteatar 3",
     },
     {
       subject: "Psihologija",
@@ -176,13 +188,6 @@ export const globalCurriculum: GlobalCurriculum = {
       groups: ["A7"],
       time: "16:15-18:00",
       location: "13",
-    },
-    {
-      subject: "Matematika 2",
-      type: "V",
-      groups: ["A8"],
-      time: "16:15-18:00",
-      location: "15",
     },
     {
       subject: "Matematika 2",
@@ -210,20 +215,6 @@ export const globalCurriculum: GlobalCurriculum = {
     {
       subject: "Matematika 2",
       type: "V",
-      groups: ["A13"],
-      time: "08:15-10:00",
-      location: "16",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A2"],
-      time: "08:15-10:00",
-      location: "21",
-    },
-    {
-      subject: "Matematika 2",
-      type: "V",
       groups: ["A14"],
       time: "08:15-10:00",
       location: "17",
@@ -236,11 +227,25 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "20",
     },
     {
-      subject: "Inženjering procesa",
+      subject: "Uvod u informacione sisteme",
       type: "V",
-      groups: ["A7"],
+      groups: ["A2"],
+      time: "08:15-10:00",
+      location: "21",
+    },
+    {
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A13"],
+      time: "08:15-10:00",
+      location: "16",
+    },
+    {
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A11"],
       time: "10:15-12:00",
-      location: "30",
+      location: "13",
     },
     {
       subject: "Inženjering procesa",
@@ -250,6 +255,13 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "21",
     },
     {
+      subject: "Inženjering procesa",
+      type: "V",
+      groups: ["A5"],
+      time: "10:15-12:00",
+      location: "20",
+    },
+    {
       subject: "Matematika 2",
       type: "V",
       groups: ["A12"],
@@ -257,11 +269,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "14",
     },
     {
-      subject: "Matematika 2",
+      subject: "Uvod u informacione sisteme",
       type: "V",
-      groups: ["A11"],
+      groups: ["A14"],
       time: "10:15-12:00",
-      location: "13",
+      location: "17",
     },
     {
       subject: "Matematika 2",
@@ -278,18 +290,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "16",
     },
     {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A14"],
-      time: "10:15-12:00",
-      location: "17",
-    },
-    {
       subject: "Inženjering procesa",
       type: "V",
-      groups: ["A5"],
+      groups: ["A7"],
       time: "10:15-12:00",
-      location: "20",
+      location: "30",
     },
     {
       subject: "Matematika 2",
@@ -301,9 +306,9 @@ export const globalCurriculum: GlobalCurriculum = {
     {
       subject: "Uvod u informacione sisteme",
       type: "V",
-      groups: ["A4"],
+      groups: ["A3"],
       time: "12:15-14:00",
-      location: "15",
+      location: "14",
     },
     {
       subject: "Uvod u informacione sisteme",
@@ -311,13 +316,6 @@ export const globalCurriculum: GlobalCurriculum = {
       groups: ["A5", "A6", "A7"],
       time: "12:15-14:00",
       location: "Amfiteatar 1",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A3"],
-      time: "12:15-14:00",
-      location: "14",
     },
     {
       subject: "Psihologija",
@@ -332,6 +330,13 @@ export const globalCurriculum: GlobalCurriculum = {
       groups: ["A8"],
       time: "12:15-14:00",
       location: "21",
+    },
+    {
+      subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A4"],
+      time: "12:15-14:00",
+      location: "15",
     },
     {
       subject: "Matematika 2",
@@ -357,16 +362,16 @@ export const globalCurriculum: GlobalCurriculum = {
     {
       subject: "Uvod u informacione sisteme",
       type: "V",
-      groups: ["A11"],
+      groups: ["A12"],
       time: "16:15-18:00",
-      location: "16",
+      location: "17",
     },
     {
       subject: "Uvod u informacione sisteme",
       type: "V",
-      groups: ["A12"],
+      groups: ["A11"],
       time: "16:15-18:00",
-      location: "17",
+      location: "16",
     },
     {
       subject: "Inženjering procesa",
@@ -374,13 +379,6 @@ export const globalCurriculum: GlobalCurriculum = {
       groups: ["A1", "A2", "A3", "A4"],
       time: "16:15-18:00",
       location: "Amfiteatar 4",
-    },
-    {
-      subject: "Inženjering procesa",
-      type: "V",
-      groups: ["A4"],
-      time: "18:15-20:00",
-      location: "Amfiteatar 5",
     },
     {
       subject: "Inženjering procesa",
@@ -398,6 +396,13 @@ export const globalCurriculum: GlobalCurriculum = {
     },
     {
       subject: "Inženjering procesa",
+      type: "V",
+      groups: ["A4"],
+      time: "18:15-20:00",
+      location: "Amfiteatar 5",
+    },
+    {
+      subject: "Inženjering procesa",
       type: "P",
       groups: ["A8", "A9", "A10"],
       time: "18:15-20:00",
@@ -406,11 +411,18 @@ export const globalCurriculum: GlobalCurriculum = {
   ],
   Sreda: [
     {
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A3"],
+      time: "08:15-10:00",
+      location: "17",
+    },
+    {
       subject: "Principi programiranja",
       type: "V",
       groups: ["A9"],
       time: "08:15-10:00",
-      location: "50 / 62",
+      location: "60 / 62",
     },
     {
       subject: "Psihologija",
@@ -427,46 +439,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "18",
     },
     {
-      subject: "Matematika 2",
-      type: "V",
-      groups: ["A3"],
-      time: "08:15-10:00",
-      location: "17",
-    },
-    {
       subject: "Principi programiranja",
       type: "P",
       groups: ["A5", "A6", "A7"],
       time: "08:15-10:00",
       location: "Amfiteatar 4",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A5"],
-      time: "10:15-12:00",
-      location: "13",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A6"],
-      time: "10:15-12:00",
-      location: "14",
-    },
-    {
-      subject: "Principi programiranja",
-      type: "V",
-      groups: ["A8"],
-      time: "10:15-12:00",
-      location: "62 / 50",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A7"],
-      time: "10:15-12:00",
-      location: "15",
     },
     {
       subject: "Sociologija",
@@ -493,9 +470,37 @@ export const globalCurriculum: GlobalCurriculum = {
     {
       subject: "Principi programiranja",
       type: "V",
+      groups: ["A8"],
+      time: "10:15-12:00",
+      location: "60 / 62",
+    },
+    {
+      subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A5"],
+      time: "10:15-12:00",
+      location: "13",
+    },
+    {
+      subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A6"],
+      time: "10:15-12:00",
+      location: "14",
+    },
+    {
+      subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A7"],
+      time: "10:15-12:00",
+      location: "15",
+    },
+    {
+      subject: "Principi programiranja",
+      type: "V",
       groups: ["A7"],
       time: "12:15-14:00",
-      location: "40 / 50",
+      location: "50 / 40",
     },
     {
       subject: "Principi programiranja",
@@ -505,13 +510,6 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 2",
     },
     {
-      subject: "Engleski jezik u menadžmentu 1",
-      type: "V",
-      groups: ["A15"],
-      time: "12:15-14:00",
-      location: "15",
-    },
-    {
       subject: "Sociologija",
       type: "V",
       groups: ["A17", "A18"],
@@ -519,18 +517,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Čitaonica",
     },
     {
-      subject: "Psihologija",
+      subject: "Engleski jezik u menadžmentu 1",
       type: "V",
-      groups: ["A17"],
-      time: "14:15-16:00",
-      location: "20",
-    },
-    {
-      subject: "Psihologija",
-      type: "V",
-      groups: ["A18"],
-      time: "14:15-16:00",
-      location: "30",
+      groups: ["A15"],
+      time: "12:15-14:00",
+      location: "15",
     },
     {
       subject: "Inženjering procesa",
@@ -538,6 +529,13 @@ export const globalCurriculum: GlobalCurriculum = {
       groups: ["A8"],
       time: "14:15-16:00",
       location: "13",
+    },
+    {
+      subject: "Principi programiranja",
+      type: "V",
+      groups: ["A6"],
+      time: "14:15-16:00",
+      location: "60 / 61",
     },
     {
       subject: "Principi programiranja",
@@ -561,11 +559,18 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "14",
     },
     {
-      subject: "Principi programiranja",
+      subject: "Psihologija",
       type: "V",
-      groups: ["A6"],
+      groups: ["A17"],
       time: "14:15-16:00",
-      location: "60 / 61",
+      location: "20",
+    },
+    {
+      subject: "Psihologija",
+      type: "V",
+      groups: ["A18"],
+      time: "14:15-16:00",
+      location: "30",
     },
     {
       subject: "Principi programiranja",
@@ -579,7 +584,7 @@ export const globalCurriculum: GlobalCurriculum = {
       type: "V",
       groups: ["A17"],
       time: "16:15-18:00",
-      location: "Čitaonica",
+      location: "15",
     },
     {
       subject: "Osnove operacionog menadžmenta",
@@ -600,9 +605,9 @@ export const globalCurriculum: GlobalCurriculum = {
     {
       subject: "Principi programiranja",
       type: "V",
-      groups: ["A2"],
+      groups: ["A1"],
       time: "08:15-10:00",
-      location: "60 / 61",
+      location: "50 / 40",
     },
     {
       subject: "Matematika 2",
@@ -612,11 +617,18 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "14",
     },
     {
+      subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A18"],
+      time: "08:15-10:00",
+      location: "17",
+    },
+    {
       subject: "Principi programiranja",
       type: "V",
-      groups: ["A1"],
+      groups: ["A2"],
       time: "08:15-10:00",
-      location: "50 / 40",
+      location: "61 / 60",
     },
     {
       subject: "Matematika 2",
@@ -624,13 +636,6 @@ export const globalCurriculum: GlobalCurriculum = {
       groups: ["A8", "A9", "A10"],
       time: "08:15-10:00",
       location: "Amfiteatar 2",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A18"],
-      time: "08:15-10:00",
-      location: "17",
     },
     {
       subject: "Uvod u informacione sisteme",
@@ -655,6 +660,20 @@ export const globalCurriculum: GlobalCurriculum = {
     },
     {
       subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A9"],
+      time: "10:15-12:00",
+      location: "14",
+    },
+    {
+      subject: "Uvod u informacione sisteme",
+      type: "V",
+      groups: ["A8"],
+      time: "10:15-12:00",
+      location: "13",
+    },
+    {
+      subject: "Uvod u informacione sisteme",
       type: "P",
       groups: ["A1", "A2", "A3", "A4"],
       time: "10:15-12:00",
@@ -668,18 +687,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 2",
     },
     {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A8"],
-      time: "10:15-12:00",
-      location: "13",
-    },
-    {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A9"],
-      time: "10:15-12:00",
-      location: "14",
+      subject: "Principi programiranja",
+      type: "P",
+      groups: ["A1", "A2", "A3", "A4"],
+      time: "12:15-14:00",
+      location: "Amfiteatar 4",
     },
     {
       subject: "Uvod u informacione sisteme",
@@ -689,11 +701,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 1",
     },
     {
-      subject: "Matematika 2",
+      subject: "Uvod u informacione sisteme",
       type: "V",
-      groups: ["A17"],
+      groups: ["A15"],
       time: "12:15-14:00",
-      location: "15",
+      location: "16",
     },
     {
       subject: "Engleski jezik u menadžmentu 1",
@@ -703,18 +715,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 5",
     },
     {
-      subject: "Uvod u informacione sisteme",
-      type: "V",
-      groups: ["A15"],
-      time: "12:15-14:00",
-      location: "16",
-    },
-    {
       subject: "Matematika 2",
       type: "V",
-      groups: ["A18"],
+      groups: ["A17"],
       time: "12:15-14:00",
-      location: "14",
+      location: "15",
     },
     {
       subject: "Uvod u informacione sisteme",
@@ -724,18 +729,18 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "17",
     },
     {
-      subject: "Principi programiranja",
-      type: "P",
-      groups: ["A1", "A2", "A3", "A4"],
+      subject: "Matematika 2",
+      type: "V",
+      groups: ["A18"],
       time: "12:15-14:00",
-      location: "Amfiteatar 4",
+      location: "14",
     },
     {
-      subject: "Osnove operacionog menadžmenta",
-      type: "V",
+      subject: "Francuski jezik u informatici",
+      type: "P",
       groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
       time: "14:15-16:00",
-      location: "Amfiteatar 5",
+      location: "12",
     },
     {
       subject: "Engleski jezik u menadžmentu 1",
@@ -752,6 +757,20 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "13",
     },
     {
+      subject: "Osnove operacionog menadžmenta",
+      type: "V",
+      groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
+      time: "14:15-16:00",
+      location: "Amfiteatar 5",
+    },
+    {
+      subject: "Menadžment tehnologije i razvoja",
+      type: "P",
+      groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
+      time: "14:15-16:00",
+      location: "Amfiteatar 2",
+    },
+    {
       subject: "Engleski jezik u menadžmentu 1",
       type: "V",
       groups: ["A13"],
@@ -763,14 +782,7 @@ export const globalCurriculum: GlobalCurriculum = {
       type: "V",
       groups: ["A11"],
       time: "14:15-16:00",
-      location: "Čitaonica",
-    },
-    {
-      subject: "Menadžment tehnologije i razvoja",
-      type: "P",
-      groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
-      time: "14:15-16:00",
-      location: "Amfiteatar 2",
+      location: "Amfiteatar 3",
     },
     {
       subject: "Uvod u informacione sisteme",
@@ -780,11 +792,18 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "Amfiteatar 1",
     },
     {
-      subject: "Menadžment tehnologije i razvoja",
+      subject: "Francuski jezik u informatici",
       type: "V",
       groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
       time: "16:15-18:00",
-      location: "Amfiteatar 2",
+      location: "12",
+    },
+    {
+      subject: "Engleski jezik u menadžmentu 1",
+      type: "V",
+      groups: ["A12"],
+      time: "16:15-18:00",
+      location: "21",
     },
     {
       subject: "Engleski jezik u menadžmentu 1",
@@ -794,11 +813,11 @@ export const globalCurriculum: GlobalCurriculum = {
       location: "18",
     },
     {
-      subject: "Engleski jezik u menadžmentu 1",
+      subject: "Menadžment tehnologije i razvoja",
       type: "V",
-      groups: ["A12"],
+      groups: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
       time: "16:15-18:00",
-      location: "21",
+      location: "Amfiteatar 2",
     },
     {
       subject: "Principi programiranja",

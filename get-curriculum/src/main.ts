@@ -1,7 +1,7 @@
 import fs from "fs";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
-const url: string = `https://oas.fon.bg.ac.rs/wp-content/uploads/2026/03/Letnji-2025-26-1-15032026.pdf`;
+const url: string = `https://oas.fon.bg.ac.rs/wp-content/uploads/2026/03/Letnji-2025-26-1-21032026.pdf`;
 const days = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak"];
 
 const pdfData = await extractPdfText(url);
