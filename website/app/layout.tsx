@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: "Raspored Predavanja za Fon",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Raspored Predavanja za Fon - Open Graph Image",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
       "Jednostavan i pregledan raspored predavanja (časova) za Fakultet organizacionih nauka",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Raspored Predavanja za Fon - Twitter Card Image",
