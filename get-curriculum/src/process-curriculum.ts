@@ -32,10 +32,7 @@ export function processCurriculum(pdfText: string): Curriculum {
           .replace(/\s+/g, " ")
           .trim(),
         type,
-        groups: groups
-          .split(",")
-          .map((g) => g.trim())
-          .filter((g) => g.startsWith("A")),
+        groups: groups.split(",").map((g) => g.trim()),
         time: time.replace(/\s*-\s*/, "-").trim(),
         location,
       }))

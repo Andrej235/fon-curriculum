@@ -200,6 +200,76 @@
       "groups": ["A1", "A2"],
       "time": "18:15-20:00",
       "location": "Amfiteatar 3"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B8"],
+      "time": "08:15-10:00",
+      "location": "40 / 50"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B4", "B5"],
+      "time": "08:15-10:00",
+      "location": "20 / 21"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "P",
+      "groups": ["B4", "B5", "B6", "B9"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "P",
+      "groups": ["B1", "B2", "B3", "B8"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "P",
+      "groups": ["B4", "B5", "B6", "B9"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "P",
+      "groups": ["B1", "B2", "B3", "B8"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "P",
+      "groups": ["B4", "B5", "B6", "B9"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Statistika",
+      "type": "P",
+      "groups": ["B1", "B2", "B3", "B8"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "P",
+      "groups": ["B1", "B2", "B3", "B8"],
+      "time": "16:15-18:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Statistika",
+      "type": "P",
+      "groups": ["B4", "B5", "B6", "B9"],
+      "time": "16:15-18:00",
+      "location": "Amfiteatar 5"
     }
   ],
   "Utorak": [
@@ -398,6 +468,188 @@
       "groups": ["A8", "A9", "A10"],
       "time": "18:15-20:00",
       "location": "Amfiteatar 1"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "P",
+      "groups": ["B15", "B16", "B17"],
+      "time": "08:15-10:00",
+      "location": "Amfiteatar 3"
+    },
+    {
+      "subject": "Ekonomika poslovanja i planiranje",
+      "type": "P",
+      "groups": ["B11", "B12", "B13", "B14"],
+      "time": "08:15-10:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B4"],
+      "time": "08:15-10:00",
+      "location": "40 / 50"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B3"],
+      "time": "08:15-10:00",
+      "location": "60 / 61"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B2"],
+      "time": "08:15-10:00",
+      "location": "08 / 09"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B2"],
+      "time": "10:15-12:00",
+      "location": "60 / 61"
+    },
+    {
+      "subject": "Ekonomika poslovanja i planiranje",
+      "type": "P",
+      "groups": ["B15", "B16", "B17", "D1", "D2", "D3", "D4", "D5", "D6"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B3"],
+      "time": "10:15-12:00",
+      "location": "40 / 50"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "P",
+      "groups": ["B11", "B12", "B13", "B14"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B2"],
+      "time": "12:15-14:00",
+      "location": "61 / 60"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B4"],
+      "time": "12:15-14:00",
+      "location": "09 / 08"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B3"],
+      "time": "12:15-14:00",
+      "location": "62"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "P",
+      "groups": ["B11", "B12", "B13", "B14"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "P",
+      "groups": ["B15", "B16", "B17"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "P",
+      "groups": ["B15", "B16", "B17"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B5"],
+      "time": "14:15-16:00",
+      "location": "08 / 09"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B9"],
+      "time": "14:15-16:00",
+      "location": "62"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B6"],
+      "time": "14:15-16:00",
+      "location": "60 / 61"
+    },
+    {
+      "subject": "Statistika",
+      "type": "P",
+      "groups": ["B11", "B12", "B13", "B14"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B9"],
+      "time": "16:15-18:00",
+      "location": "60 / 61"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B5"],
+      "time": "16:15-18:00",
+      "location": "09 / 08"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B6"],
+      "time": "16:15-18:00",
+      "location": "62"
+    },
+    {
+      "subject": "Statistika",
+      "type": "P",
+      "groups": ["B15", "B16", "B17"],
+      "time": "16:15-18:00",
+      "location": "Amfiteatar 1"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B9"],
+      "time": "18:15-20:00",
+      "location": "61 / 60"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B5"],
+      "time": "18:15-20:00",
+      "location": "50 / 40"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B6"],
+      "time": "18:15-20:00",
+      "location": "62"
     }
   ],
   "Sreda": [
@@ -580,9 +832,233 @@
     {
       "subject": "Osnove operacionog menadžmenta",
       "type": "P",
-      "groups": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
+      "groups": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "B15",
+        "B16",
+        "B17"
+      ],
       "time": "16:15-18:00",
       "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B1", "B2", "B3"],
+      "time": "08:15-10:00",
+      "location": "Amfiteatar 3"
+    },
+    {
+      "subject": "Finansijski menadžment i računovodstvo",
+      "type": "V",
+      "groups": ["B6"],
+      "time": "08:15-10:00",
+      "location": "14"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "P",
+      "groups": ["B11", "B12", "B13", "B14"],
+      "time": "08:15-10:00",
+      "location": "Amfiteatar 1"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B8"],
+      "time": "08:15-10:00",
+      "location": "16"
+    },
+    {
+      "subject": "Finansijski menadžment i računovodstvo",
+      "type": "V",
+      "groups": ["B9"],
+      "time": "08:15-10:00",
+      "location": "15"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "V",
+      "groups": ["B11"],
+      "time": "10:15-12:00",
+      "location": "12"
+    },
+    {
+      "subject": "Osnove finansijskog menadžmenta",
+      "type": "V",
+      "groups": ["B1", "B2", "B3", "B4", "B5", "B6", "B8", "B9"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Finansijski menadžment i računovodstvo",
+      "type": "P",
+      "groups": ["B4", "B5", "B6", "B9"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "V",
+      "groups": ["B13", "B14"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 3"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B11"],
+      "time": "12:15-14:00",
+      "location": "17"
+    },
+    {
+      "subject": "Finansijski menadžment i računovodstvo",
+      "type": "V",
+      "groups": ["B2", "B3", "B8"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Finansijski menadžment i računovodstvo",
+      "type": "V",
+      "groups": ["B1", "B4", "B5"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B15"],
+      "time": "14:15-16:00",
+      "location": "18"
+    },
+    {
+      "subject": "Osnove finansijskog menadžmenta",
+      "type": "P",
+      "groups": ["B1", "B2", "B3", "B4", "B5", "B6", "B8", "B9"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Finansijski menadžment i računovodstvo",
+      "type": "P",
+      "groups": ["B1", "B2", "B3", "B8"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Ekonomika poslovanja i planiranje",
+      "type": "V",
+      "groups": ["B13", "B14", "D2", "D4"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 1"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "V",
+      "groups": ["B12"],
+      "time": "14:15-16:00",
+      "location": "16"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "P",
+      "groups": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "A10",
+        "B15",
+        "B16",
+        "B17"
+      ],
+      "time": "16:15-18:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B6"],
+      "time": "16:15-18:00",
+      "location": "13"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B12"],
+      "time": "16:15-18:00",
+      "location": "16"
+    },
+    {
+      "subject": "Uvod u poslovnu analitiku",
+      "type": "P",
+      "groups": ["B8"],
+      "time": "16:15-18:00",
+      "location": "08 / 09"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B13"],
+      "time": "16:15-18:00",
+      "location": "17"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B14"],
+      "time": "16:15-18:00",
+      "location": "18"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B9"],
+      "time": "16:15-18:00",
+      "location": "14"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "V",
+      "groups": ["B15", "B16", "B17"],
+      "time": "18:15-20:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B14"],
+      "time": "18:15-20:00",
+      "location": "18"
+    },
+    {
+      "subject": "Uvod u poslovnu analitiku",
+      "type": "V",
+      "groups": ["B8"],
+      "time": "18:15-20:00",
+      "location": "09 / 08"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B13"],
+      "time": "18:15-20:00",
+      "location": "17"
     }
   ],
   "Četvrtak": [
@@ -816,7 +1292,295 @@
       "groups": ["A3"],
       "time": "18:15-20:00",
       "location": "62 / 50"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "V",
+      "groups": ["B15"],
+      "time": "08:15-10:00",
+      "location": "18"
+    },
+    {
+      "subject": "Ekonomika poslovanja i planiranje",
+      "type": "V",
+      "groups": ["B17", "D1", "D3", "D5", "D6"],
+      "time": "08:15-10:00",
+      "location": "21"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "V",
+      "groups": ["B17"],
+      "time": "10:15-12:00",
+      "location": "61"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "V",
+      "groups": ["B16"],
+      "time": "10:15-12:00",
+      "location": "62"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "V",
+      "groups": ["B15"],
+      "time": "10:15-12:00",
+      "location": "18"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B16"],
+      "time": "12:15-14:00",
+      "location": "12"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B15"],
+      "time": "12:15-14:00",
+      "location": "18"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "V",
+      "groups": ["B17"],
+      "time": "12:15-14:00",
+      "location": "30"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B11"],
+      "time": "14:15-16:00",
+      "location": "15"
+    },
+    {
+      "subject": "Inženjering procesa",
+      "type": "V",
+      "groups": ["B17"],
+      "time": "14:15-16:00",
+      "location": "30"
+    },
+    {
+      "subject": "Menadžment tehnologije i razvoja",
+      "type": "V",
+      "groups": ["B16"],
+      "time": "14:15-16:00",
+      "location": "17"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B12"],
+      "time": "14:15-16:00",
+      "location": "14"
+    },
+    {
+      "subject": "Ekonomika poslovanja i planiranje",
+      "type": "V",
+      "groups": ["B11", "B12", "B15", "B16"],
+      "time": "16:15-18:00",
+      "location": "Amfiteatar 4"
     }
   ],
-  "Petak": []
+  "Petak": [
+    {
+      "subject": "Uvod u poslovnu analitiku",
+      "type": "V",
+      "groups": ["B8"],
+      "time": "08:15-10:00",
+      "location": "62"
+    },
+    {
+      "subject": "Klijentske veb tehnologije i skriptni jezici",
+      "type": "V",
+      "groups": ["B6"],
+      "time": "08:15-10:00",
+      "location": "61 / 60"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "P",
+      "groups": ["B11", "B12", "B13", "B14"],
+      "time": "08:15-10:00",
+      "location": "Amfiteatar 2"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B4"],
+      "time": "08:15-10:00",
+      "location": "08 / 09"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B1"],
+      "time": "08:15-10:00",
+      "location": "50"
+    },
+    {
+      "subject": "Uvod u poslovnu analitiku",
+      "type": "P",
+      "groups": ["B8"],
+      "time": "10:15-12:00",
+      "location": "62"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "V",
+      "groups": ["B14"],
+      "time": "10:15-12:00",
+      "location": "14"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "V",
+      "groups": ["B13"],
+      "time": "10:15-12:00",
+      "location": "13"
+    },
+    {
+      "subject": "Strukture podataka i algoritmi",
+      "type": "V",
+      "groups": ["B1"],
+      "time": "10:15-12:00",
+      "location": "50"
+    },
+    {
+      "subject": "Interakcija čovek-računar",
+      "type": "P",
+      "groups": ["B2", "B3"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Programiranje 2",
+      "type": "V",
+      "groups": ["B5"],
+      "time": "10:15-12:00",
+      "location": "19 / 07"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "V",
+      "groups": ["B11", "B12"],
+      "time": "10:15-12:00",
+      "location": "Amfiteatar 2"
+    },
+    {
+      "subject": "Klijentske veb tehnologije i skriptni jezici",
+      "type": "P",
+      "groups": ["B6"],
+      "time": "10:15-12:00",
+      "location": "17"
+    },
+    {
+      "subject": "Baze podataka",
+      "type": "V",
+      "groups": ["B8"],
+      "time": "12:15-14:00",
+      "location": "11 / 62"
+    },
+    {
+      "subject": "Interakcija čovek-računar",
+      "type": "V",
+      "groups": ["B2", "B3"],
+      "time": "12:15-14:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B1"],
+      "time": "12:15-14:00",
+      "location": "50"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "V",
+      "groups": ["B12"],
+      "time": "12:15-14:00",
+      "location": "13"
+    },
+    {
+      "subject": "Programiranje 2",
+      "type": "V",
+      "groups": ["B4"],
+      "time": "12:15-14:00",
+      "location": "40 / 19"
+    },
+    {
+      "subject": "Osnove operacionog menadžmenta",
+      "type": "V",
+      "groups": ["B11"],
+      "time": "12:15-14:00",
+      "location": "14"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "V",
+      "groups": ["B13"],
+      "time": "12:15-14:00",
+      "location": "60"
+    },
+    {
+      "subject": "Standardizacija",
+      "type": "V",
+      "groups": ["B14"],
+      "time": "12:15-14:00",
+      "location": "61"
+    },
+    {
+      "subject": "Programiranje 2",
+      "type": "P",
+      "groups": ["B4", "B5"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 4"
+    },
+    {
+      "subject": "Programski jezici za analitiku",
+      "type": "V",
+      "groups": ["B9"],
+      "time": "14:15-16:00",
+      "location": "08 / 09"
+    },
+    {
+      "subject": "Statistika",
+      "type": "V",
+      "groups": ["B16", "B17"],
+      "time": "14:15-16:00",
+      "location": "Amfiteatar 2"
+    },
+    {
+      "subject": "Cloud infrastruktura i servisi",
+      "type": "V",
+      "groups": ["B8"],
+      "time": "14:15-16:00",
+      "location": "50 / 62"
+    },
+    {
+      "subject": "Jezici i okruženja za razvoj IS",
+      "type": "P",
+      "groups": ["B1"],
+      "time": "16:15-18:00",
+      "location": "62"
+    },
+    {
+      "subject": "Programski jezici za analitiku",
+      "type": "P",
+      "groups": ["B9"],
+      "time": "16:15-18:00",
+      "location": "Amfiteatar 5"
+    },
+    {
+      "subject": "Jezici i okruženja za razvoj IS",
+      "type": "V",
+      "groups": ["B1"],
+      "time": "18:15-20:00",
+      "location": "62"
+    }
+  ]
 }
